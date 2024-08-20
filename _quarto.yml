@@ -3,7 +3,7 @@ project:
   output-dir: docs
   
 website:
-  title: "Futurverse - UseR! 2024"
+  title: "Futureverse - UseR! 2024"
   navbar:
     left:
       - text: "Part 1"
