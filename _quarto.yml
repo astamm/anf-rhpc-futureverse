@@ -3,8 +3,9 @@ project:
   output-dir: docs
   
 website:
-  title: "Futureverse - ANF High Performance Computing with R"
+  title: "futureverse"
   navbar:
+    logo: logo-futureverse.png
     left:
       - text: "Part 1"
         menu:
