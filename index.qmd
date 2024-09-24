@@ -1,11 +1,8 @@
 ---
 title: "Instructions for the tutorial"
-author: "Aymeric Stamm"
 ---
 
-## Futureverse - ANF High Performance Computing with R
-
-### Disclaimer
+## Disclaimer
 
 This repository is build on the work of Henrik Bengtsson, who created the
 [{future}](https://future.futureverse.org) package and the
@@ -14,7 +11,7 @@ Henrik's repository
 [here](https://github.com/HenrikBengtsson/future-tutorial-user2024) with
 hopefully some modifications to make it more suitable for the ANF tutorial.
 
-### Material
+## Material
 
 Material for the Futureverse tutorial at the ANF [High Performance Computing with R](https://indico.mathrice.fr/event/536/), Frejus, France. 
 
