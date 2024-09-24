@@ -6,8 +6,9 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
+<meta name="author" content="Aymeric Stamm">
 
-<title>Instructions for the tutorial – futureverse</title>
+<title>Hausdorff Distance Matrix Computation – futureverse</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -20,25 +21,59 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 </style>
 
 
-<script src="site_libs/quarto-nav/quarto-nav.js"></script>
-<script src="site_libs/quarto-nav/headroom.min.js"></script>
-<script src="site_libs/clipboard/clipboard.min.js"></script>
-<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
-<script src="site_libs/quarto-search/fuse.min.js"></script>
-<script src="site_libs/quarto-search/quarto-search.js"></script>
-<meta name="quarto:offset" content="./">
-<script src="site_libs/quarto-html/quarto.js"></script>
-<script src="site_libs/quarto-html/popper.min.js"></script>
-<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
-<script src="site_libs/quarto-html/anchor.min.js"></script>
-<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
-<script src="site_libs/bootstrap/bootstrap.min.js"></script>
-<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<script src="../site_libs/quarto-html/quarto.js"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -66,6 +101,35 @@ ul.task-list li input[type="checkbox"] {
   }
 }</script>
 
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
 
 <link rel="stylesheet" href="styles.css">
 </head>
@@ -77,10 +141,10 @@ ul.task-list li input[type="checkbox"] {
     <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
-    <a href="./index.html" class="navbar-brand navbar-brand-logo">
-    <img src="./logo-futureverse.png" alt="" class="navbar-logo">
+    <a href="../index.html" class="navbar-brand navbar-brand-logo">
+    <img src="../logo-futureverse.png" alt="" class="navbar-logo">
     </a>
-    <a class="navbar-brand" href="./index.html">
+    <a class="navbar-brand" href="../index.html">
     <span class="navbar-title">futureverse</span>
     </a>
   </div>
@@ -100,7 +164,7 @@ ul.task-list li input[type="checkbox"] {
  <span class="dropdown-text">Slides Part 1 (online)</span></a>
   </li>  
         <li>
-    <a class="dropdown-item" href="./lab1.html">
+    <a class="dropdown-item" href="../lab1.html">
  <span class="dropdown-text">Lab 1</span></a>
   </li>  
     </ul>
@@ -115,17 +179,17 @@ ul.task-list li input[type="checkbox"] {
  <span class="dropdown-text">Slides Part 2 (online)</span></a>
   </li>  
         <li>
-    <a class="dropdown-item" href="./lab2.html">
+    <a class="dropdown-item" href="../lab2.html">
  <span class="dropdown-text">Lab 2</span></a>
   </li>  
     </ul>
   </li>
   <li class="nav-item">
-    <a class="nav-link" href="./lab/hausdorff_dist.html"> 
+    <a class="nav-link active" href="../lab/hausdorff_dist.html" aria-current="page"> 
 <span class="menu-text">Case Study</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="./futureverse-faq.html"> 
+    <a class="nav-link" href="../futureverse-faq.html"> 
 <span class="menu-text">FAQ</span></a>
   </li>  
 </ul>
@@ -151,26 +215,34 @@ ul.task-list li input[type="checkbox"] {
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#disclaimer" id="toc-disclaimer" class="nav-link active" data-scroll-target="#disclaimer">Disclaimer</a></li>
-  <li><a href="#material" id="toc-material" class="nav-link" data-scroll-target="#material">Material</a>
+  <li><a href="#data-goal" id="toc-data-goal" class="nav-link active" data-scroll-target="#data-goal">Data &amp; Goal</a></li>
+  <li><a href="#basic-r-sequential-version" id="toc-basic-r-sequential-version" class="nav-link" data-scroll-target="#basic-r-sequential-version">Basic R sequential version</a>
   <ul class="collapse">
-  <li><a href="#requirements" id="toc-requirements" class="nav-link" data-scroll-target="#requirements">Requirements</a></li>
+  <li><a href="#hausdorff-distance" id="toc-hausdorff-distance" class="nav-link" data-scroll-target="#hausdorff-distance">Hausdorff distance</a></li>
+  <li><a href="#a-first-solution" id="toc-a-first-solution" class="nav-link" data-scroll-target="#a-first-solution">A first solution</a></li>
   </ul></li>
+  <li><a href="#your-turn" id="toc-your-turn" class="nav-link" data-scroll-target="#your-turn">Your turn</a></li>
   </ul>
-<div class="toc-actions"><ul><li><a href="https://github.com/astamm/anf-rhpc-futureverse/edit/main/index.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/astamm/anf-rhpc-futureverse/blob/main/index.qmd" class="toc-action"><i class="bi empty"></i>View source</a></li><li><a href="https://github.com/astamm/anf-rhpc-futureverse/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
+<div class="toc-actions"><ul><li><a href="https://github.com/astamm/anf-rhpc-futureverse/edit/main/lab/hausdorff_dist.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/astamm/anf-rhpc-futureverse/blob/main/lab/hausdorff_dist.qmd" class="toc-action"><i class="bi empty"></i>View source</a></li><li><a href="https://github.com/astamm/anf-rhpc-futureverse/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Instructions for the tutorial</h1>
+<h1 class="title">Hausdorff Distance Matrix Computation</h1>
 </div>
 
 
 
 <div class="quarto-title-meta">
 
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Aymeric Stamm </p>
+          </div>
+  </div>
     
   
     
@@ -181,33 +253,126 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<section id="disclaimer" class="level2">
-<h2 class="anchored" data-anchor-id="disclaimer">Disclaimer</h2>
-<p>This repository is build on the work of Henrik Bengtsson, who created the <a href="https://future.futureverse.org">{future}</a> package and the <a href="https://www.futureverse.org">{futureverse}</a> suite of packages. It is a fork of Henrik’s repository <a href="https://github.com/HenrikBengtsson/future-tutorial-user2024">here</a> with hopefully some modifications to make it more suitable for the ANF tutorial.</p>
+<section id="data-goal" class="level2">
+<h2 class="anchored" data-anchor-id="data-goal">Data &amp; Goal</h2>
+<p>We have simulated 3D functional data for this lab that is provided in the Quarto document in the <code>dat</code> object.</p>
+<p>The <code>dat</code> object is a list of size <span class="math inline">\(100\)</span> containing <span class="math inline">\(100\)</span> three-dimensional curves observed on a common grid of size <span class="math inline">\(200\)</span> of the interval <span class="math inline">\([0, 1]\)</span>.</p>
+<p>As a result, each element of the <code>dat</code> list is a <span class="math inline">\(3 \times 200\)</span> matrix.</p>
+<p>The data looks like this:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(mfdat)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="hausdorff_dist_files/figure-html/dat-viz-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<div class="callout callout-style-default callout-tip no-icon callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Objective
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>The goal is to implement a function similar to <code>stats::dist()</code> which computes the pairwise distance matrix on this functional dataset using the Hausdorff distance.</p>
+</div>
+</div>
 </section>
-<section id="material" class="level2">
-<h2 class="anchored" data-anchor-id="material">Material</h2>
-<p>Material for the Futureverse tutorial at the ANF <a href="https://indico.mathrice.fr/event/536/">High Performance Computing with R</a>, Frejus, France.</p>
-<p>Total time: 3 hours (tentatively).</p>
-<p>The main webpage is at <a href="https://astamm.github.io/anf-rhpc-futureverse/" class="uri">https://astamm.github.io/anf-rhpc-futureverse/</a>.</p>
-<section id="requirements" class="level3">
-<h3 class="anchored" data-anchor-id="requirements">Requirements</h3>
+<section id="basic-r-sequential-version" class="level2">
+<h2 class="anchored" data-anchor-id="basic-r-sequential-version">Basic R sequential version</h2>
+<section id="hausdorff-distance" class="level3">
+<h3 class="anchored" data-anchor-id="hausdorff-distance">Hausdorff distance</h3>
+<p>We can implement the Hausdorff distance between two curves as:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>hausdorff_distance <span class="ot">&lt;-</span> <span class="cf">function</span>(x, y) {</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>  dX <span class="ot">&lt;-</span> <span class="fu">max</span>(purrr<span class="sc">::</span><span class="fu">map_dbl</span>(x, \(.x) {</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">min</span>(<span class="fu">sqrt</span>(<span class="fu">colSums</span>((y <span class="sc">-</span> .x)<span class="sc">^</span><span class="dv">2</span>)))</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>  }))</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>  dY <span class="ot">&lt;-</span> <span class="fu">max</span>(purrr<span class="sc">::</span><span class="fu">map_dbl</span>(y, \(.y) {</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>    <span class="fu">min</span>(<span class="fu">sqrt</span>(<span class="fu">colSums</span>((x <span class="sc">-</span> .y)<span class="sc">^</span><span class="dv">2</span>)))</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>  }))</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">max</span>(dX, dY)</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a><span class="fu">hausdorff_distance</span>(dat[[<span class="dv">1</span>]], dat[[<span class="dv">2</span>]])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 6.505233</code></pre>
+</div>
+</div>
+</section>
+<section id="a-first-solution" class="level3">
+<h3 class="anchored" data-anchor-id="a-first-solution">A first solution</h3>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+dist objects
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Take a look at the documention of the <code>stats::dist()</code> function to understand how to make an object of class <code>dist</code>.</p>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>dist_hausdorff <span class="ot">&lt;-</span> <span class="cf">function</span>(x) {</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  N <span class="ot">&lt;-</span> <span class="fu">length</span>(x)</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  out <span class="ot">&lt;-</span> <span class="fu">unlist</span>(purrr<span class="sc">::</span><span class="fu">map</span>(<span class="dv">1</span><span class="sc">:</span>(N <span class="sc">-</span> <span class="dv">1</span>), \(.i) {</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>    purrr<span class="sc">::</span><span class="fu">map_dbl</span>((.i <span class="sc">+</span> <span class="dv">1</span>)<span class="sc">:</span>N, \(.j) {</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>      <span class="fu">hausdorff_distance</span>(x[[.i]], x[[.j]])</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>    })</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>  }))</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">attributes</span>(out) <span class="ot">&lt;-</span> <span class="cn">NULL</span></span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">attr</span>(out, <span class="st">"Size"</span>) <span class="ot">&lt;-</span> N</span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>  lbls <span class="ot">&lt;-</span> <span class="fu">rownames</span>(x)</span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">attr</span>(out, <span class="st">"Labels"</span>) <span class="ot">&lt;-</span> <span class="cf">if</span> (<span class="fu">is.null</span>(lbls)) <span class="dv">1</span><span class="sc">:</span>N <span class="cf">else</span> lbls</span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">attr</span>(out, <span class="st">"Diag"</span>) <span class="ot">&lt;-</span> <span class="cn">FALSE</span></span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">attr</span>(out, <span class="st">"Upper"</span>) <span class="ot">&lt;-</span> <span class="cn">FALSE</span></span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">attr</span>(out, <span class="st">"call"</span>) <span class="ot">&lt;-</span> rlang<span class="sc">::</span><span class="fu">call_match</span>()</span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">attr</span>(out, <span class="st">"method"</span>) <span class="ot">&lt;-</span> <span class="st">"dist_l2"</span></span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">class</span>(out) <span class="ot">&lt;-</span> <span class="st">"dist"</span></span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>  out</span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a><span class="fu">system.time</span>(D <span class="ot">&lt;-</span> <span class="fu">dist_hausdorff</span>(dat))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   user  system elapsed 
+ 53.080   1.193  54.275 </code></pre>
+</div>
+</div>
+</section>
+</section>
+<section id="your-turn" class="level2">
+<h2 class="anchored" data-anchor-id="your-turn">Your turn</h2>
 <ul>
-<li><p>R: <a href="https://www.r-project.org" class="uri">https://www.r-project.org</a></p></li>
-<li><p>RStudio: <a href="https://posit.co/download/rstudio-desktop/" class="uri">https://posit.co/download/rstudio-desktop/</a></p></li>
-<li><p>Quarto: <a href="https://quarto.org/docs/get-started/" class="uri">https://quarto.org/docs/get-started/</a></p></li>
-<li><p>R packages:</p>
-<ul>
-<li><a href="https://www.futureverse.org">{futureverse}</a></li>
-<li><a href="https://purrr.tidyverse.org">{purrr}</a></li>
-<li><a href="https://rlang.r-lib.org">{rlang}</a></li>
-<li><a href="https://astamm.github.io/roahd/">{roahd}</a></li>
-<li><a href="https://github.com/jabiru/tictoc">{tictoc}</a></li>
-</ul></li>
+<li>Optimize the R code;</li>
+<li>Parallelize the optimized R code with futureverse.</li>
 </ul>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+From linear index to matrix index
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>m <span class="ot">&lt;-</span> <span class="fu">nrow</span>(A)</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>r <span class="ot">&lt;-</span> ((ind <span class="sc">-</span> <span class="dv">1</span>) <span class="sc">%%</span> m) <span class="sc">+</span> <span class="dv">1</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>c <span class="ot">&lt;-</span> <span class="fu">floor</span>((ind <span class="sc">-</span> <span class="dv">1</span>) <span class="sc">/</span> m) <span class="sc">+</span> <span class="dv">1</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+</div>
 
 
-</section>
 </section>
 
 </main> <!-- /main -->
@@ -639,7 +804,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </div>   
     <div class="nav-footer-center">
       &nbsp;
-    <div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/astamm/anf-rhpc-futureverse/edit/main/index.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/astamm/anf-rhpc-futureverse/blob/main/index.qmd" class="toc-action"><i class="bi empty"></i>View source</a></li><li><a href="https://github.com/astamm/anf-rhpc-futureverse/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
+    <div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/astamm/anf-rhpc-futureverse/edit/main/lab/hausdorff_dist.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/astamm/anf-rhpc-futureverse/blob/main/lab/hausdorff_dist.qmd" class="toc-action"><i class="bi empty"></i>View source</a></li><li><a href="https://github.com/astamm/anf-rhpc-futureverse/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
     <div class="nav-footer-right">
 <p>This website is built with <a href="https://quarto.org/">Quarto</a></p>
 </div>
