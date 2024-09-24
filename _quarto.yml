@@ -18,6 +18,8 @@ website:
             url:  https://docs.google.com/presentation/d/1RN1ru9-HoOKsIjORZECFmDvzWbpVn0ZsyQDl3X37fbU/edit?usp=share_link
           - text: "Lab 2"
             href: lab2.qmd
+      - text: "FAQ"
+        href: futureverse-faq.qmd
         
   search: 
     location: navbar

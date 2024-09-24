@@ -25,3 +25,4 @@ The main webpage is at <https://astamm.github.io/anf-rhpc-futureverse/>.
 - R packages: 
 
     - [{futureverse}](https://www.futureverse.org)
+    - [{tictoc}](https://github.com/jabiru/tictoc)
