@@ -1,0 +1,107 @@
+---
+title: "Hausdorff Distance Matrix Computation"
+author: "Aymeric Stamm"
+format: html
+---
+
+```{r setup}
+#| include: false
+mfdat <- readRDS("mfdat.rds")
+dat <- readRDS("dat.rds")
+library(purrr)
+library(rlang)
+library(roahd)
+```
+
+## Data & Goal
+
+We have simulated 3D functional data for this lab that is provided in the Quarto
+document in the `dat` object.
+
+The `dat` object is a list of size $100$ containing $100$ three-dimensional
+curves observed on a common grid of size $200$ of the interval $[0, 1]$.
+
+As a result, each element of the `dat` list is a $3 \times 200$ matrix.
+
+The data looks like this:
+
+```{r dat-viz}
+#| cache: true
+plot(mfdat)
+```
+
+::: {.callout-tip icon=false}
+## Objective
+
+The goal is to implement a function similar to `stats::dist()` which computes
+the pairwise distance matrix on this functional dataset using the Hausdorff
+distance.
+:::
+
+## Basic R sequential version
+
+### Hausdorff distance
+
+We can implement the Hausdorff distance between two curves as:
+
+```{r hausdorff-r-base}
+hausdorff_distance <- function(x, y) {
+  dX <- max(purrr::map_dbl(x, \(.x) {
+    min(sqrt(colSums((y - .x)^2)))
+  }))
+  dY <- max(purrr::map_dbl(y, \(.y) {
+    min(sqrt(colSums((x - .y)^2)))
+  }))
+  max(dX, dY)
+}
+
+hausdorff_distance(dat[[1]], dat[[2]])
+```
+
+### A first solution
+
+::: {.callout-tip}
+## dist objects
+
+Take a look at the documention of the `stats::dist()` function to understand how to make an object of class `dist`.
+:::
+
+```{r haussdorf-dist-r-base}
+#| cache: true
+dist_hausdorff <- function(x) {
+  N <- length(x)
+  out <- unlist(purrr::map(1:(N - 1), \(.i) {
+    purrr::map_dbl((.i + 1):N, \(.j) {
+      hausdorff_distance(x[[.i]], x[[.j]])
+    })
+  }))
+  attributes(out) <- NULL
+  attr(out, "Size") <- N
+  lbls <- rownames(x)
+  attr(out, "Labels") <- if (is.null(lbls)) 1:N else lbls
+  attr(out, "Diag") <- FALSE
+  attr(out, "Upper") <- FALSE
+  attr(out, "call") <- rlang::call_match()
+  attr(out, "method") <- "dist_l2"
+  class(out) <- "dist"
+  out
+}
+
+system.time(D <- dist_hausdorff(dat))
+```
+
+## Your turn
+
+- Optimize the R code;
+- Parallelize the optimized R code with futureverse.
+
+::: {.callout-tip}
+## From linear index to matrix index
+
+```{r}
+#| eval: false
+m <- nrow(A)
+r <- ((ind - 1) %% m) + 1
+c <- floor((ind - 1) / m) + 1
+```
+:::

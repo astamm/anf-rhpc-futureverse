@@ -5,3 +5,6 @@
 .Rdump
 .Rhistory
 .Rproj.user
+*.DS_Store*
+*_files*
+*_cache*
