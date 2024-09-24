@@ -1,6 +1,8 @@
 ---
 title: "Lab: Futureverse 1"
-author: "Henrik Bengtsson"
+author: 
+  - "Henrik Bengtsson"
+  - "Aymeric Stamm"
 description: "Speed up your code through parallel computing"
 image: "assets/featured.jpg"
 format: html

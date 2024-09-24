@@ -3,19 +3,19 @@ project:
   output-dir: docs
   
 website:
-  title: "Futureverse - UseR! 2024"
+  title: "Futureverse - ANF High Performance Computing with R"
   navbar:
     left:
       - text: "Part 1"
         menu:
           - text: "Slides Part 1 (online)"
-            url:  https://docs.google.com/presentation/d/1O_0FHwj1kB6JXK4Z1n8-H5h00GS8nzs4P7KY6Bknais/edit?usp=sharing
+            url:  https://docs.google.com/presentation/d/1P3gHm26OPbN4Ftnr_QHw_FmHgDVtOWcC64yIWx63KtY/edit?usp=sharing
           - text: "Lab 1"
             href: lab1.qmd
       - text: "Part 2"
         menu:
           - text: "Slides Part 2 (online)"
-            url:  https://docs.google.com/presentation/d/1DNtO52spuqElppac4OL7Ov8jUTzD_vrlD1dXtQ7sUmY/edit?usp=sharing
+            url:  https://docs.google.com/presentation/d/1RN1ru9-HoOKsIjORZECFmDvzWbpVn0ZsyQDl3X37fbU/edit?usp=sharing
           - text: "Lab 2"
             href: lab2.qmd
         

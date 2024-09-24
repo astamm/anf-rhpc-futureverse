@@ -1,4 +1,4 @@
-# Futureverse - useR 2024
+# Futureverse - ANF High Performance Computing with R
 
-Material for the Futureverse tutorial at [useR! 2024](https://user2024.r-project.org/), Salzburg, Austria. Total
+Material for the Futureverse tutorial at the ANF [High Performance Computing with R](https://indico.mathrice.fr/event/536/), Frejus, France. Total
 time: 3 hours.
