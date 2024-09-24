@@ -6,6 +6,10 @@ website:
   title: "futureverse"
   repo-url: https://github.com/astamm/anf-rhpc-futureverse/
   repo-actions: [edit, source, issue]
+  page-footer: 
+    background: light
+    left: Copyright 2024, Aymeric Stamm
+    right: This website is built with [Quarto](https://quarto.org/)
   navbar:
     logo: logo-futureverse.png
     left:
