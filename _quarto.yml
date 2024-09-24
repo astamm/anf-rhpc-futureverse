@@ -4,6 +4,8 @@ project:
   
 website:
   title: "futureverse"
+  repo-url: https://github.com/astamm/anf-rhpc-futureverse/
+  repo-actions: [edit, source, issue]
   navbar:
     logo: logo-futureverse.png
     left:
@@ -21,6 +23,9 @@ website:
             href: lab2.qmd
       - text: "FAQ"
         href: futureverse-faq.qmd
+    right:
+      - icon: github
+        href: https://github.com/astamm/anf-rhpc-futureverse/
         
   search: 
     location: navbar
