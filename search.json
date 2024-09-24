@@ -25,14 +25,14 @@
     "href": "index.html",
     "title": "Instructions for the tutorial",
     "section": "",
-    "text": "Material for the Futureverse tutorial at the ANF High Performance Computing with R, Frejus, France.\nTotal time: 3 hours (tentatively).\nThe main webpage is at https://astamm.github.io/anf-rhpc-futureverse/.\n\n\n\n\nR: https://www.r-project.org\nRStudio: https://posit.co/download/rstudio-desktop/\nQuarto: https://quarto.org/docs/get-started/\nR packages:\n\n{futureverse}"
+    "text": "This repository is build on the work of Henrik Bengtsson, who created the {future} package and the {futureverse} suite of packages. It is a fork of Henrik’s repository here with hopefully some modifications to make it more suitable for the ANF tutorial.\n\n\n\nMaterial for the Futureverse tutorial at the ANF High Performance Computing with R, Frejus, France.\nTotal time: 3 hours (tentatively).\nThe main webpage is at https://astamm.github.io/anf-rhpc-futureverse/.\n\n\n\n\nR: https://www.r-project.org\nRStudio: https://posit.co/download/rstudio-desktop/\nQuarto: https://quarto.org/docs/get-started/\nR packages:\n\n{futureverse}"
   },
   {
     "objectID": "index.html#futureverse---anf-high-performance-computing-with-r",
     "href": "index.html#futureverse---anf-high-performance-computing-with-r",
     "title": "Instructions for the tutorial",
     "section": "",
-    "text": "Material for the Futureverse tutorial at the ANF High Performance Computing with R, Frejus, France.\nTotal time: 3 hours (tentatively).\nThe main webpage is at https://astamm.github.io/anf-rhpc-futureverse/.\n\n\n\n\nR: https://www.r-project.org\nRStudio: https://posit.co/download/rstudio-desktop/\nQuarto: https://quarto.org/docs/get-started/\nR packages:\n\n{futureverse}"
+    "text": "This repository is build on the work of Henrik Bengtsson, who created the {future} package and the {futureverse} suite of packages. It is a fork of Henrik’s repository here with hopefully some modifications to make it more suitable for the ANF tutorial.\n\n\n\nMaterial for the Futureverse tutorial at the ANF High Performance Computing with R, Frejus, France.\nTotal time: 3 hours (tentatively).\nThe main webpage is at https://astamm.github.io/anf-rhpc-futureverse/.\n\n\n\n\nR: https://www.r-project.org\nRStudio: https://posit.co/download/rstudio-desktop/\nQuarto: https://quarto.org/docs/get-started/\nR packages:\n\n{futureverse}"
   },
   {
     "objectID": "lab1.html",
