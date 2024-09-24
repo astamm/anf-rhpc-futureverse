@@ -2,5 +2,5 @@ publish:
 	quarto publish
 
 preview:
-	quarto preview lab1.qmd
+	quarto preview index.qmd
 

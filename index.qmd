@@ -1,3 +1,8 @@
+---
+title: "Instructions for the tutorial"
+author: "Aymeric Stamm"
+---
+
 ## Futureverse - ANF High Performance Computing with R
 
 ### Material
