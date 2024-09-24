@@ -1,0 +1,1533 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.5.57">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Tristan Mary-Huard">
+<meta name="author" content="Aymeric Stamm">
+<meta name="author" content="Louis Lacoste">
+
+<title>Futureverse follow-up to the tutorial – Futureverse - ANF High Performance Computing with R</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<script src="site_libs/quarto-html/quarto.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<link rel="stylesheet" href="styles.css">
+</head>
+
+<body class="nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="./index.html">
+    <span class="navbar-title">Futureverse - ANF High Performance Computing with R</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-part-1" role="link" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">Part 1</span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-part-1">    
+        <li>
+    <a class="dropdown-item" href="https://docs.google.com/presentation/d/1P3gHm26OPbN4Ftnr_QHw_FmHgDVtOWcC64yIWx63KtY/edit?usp=share_link">
+ <span class="dropdown-text">Slides Part 1 (online)</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="./lab1.html">
+ <span class="dropdown-text">Lab 1</span></a>
+  </li>  
+    </ul>
+  </li>
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-part-2" role="link" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">Part 2</span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-part-2">    
+        <li>
+    <a class="dropdown-item" href="https://docs.google.com/presentation/d/1RN1ru9-HoOKsIjORZECFmDvzWbpVn0ZsyQDl3X37fbU/edit?usp=share_link">
+ <span class="dropdown-text">Slides Part 2 (online)</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="./lab2.html">
+ <span class="dropdown-text">Lab 2</span></a>
+  </li>  
+    </ul>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link active" href="./futureverse-faq.html" aria-current="page"> 
+<span class="menu-text">FAQ</span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#error-handling" id="toc-error-handling" class="nav-link active" data-scroll-target="#error-handling">Error handling</a>
+  <ul class="collapse">
+  <li><a href="#problem-setup" id="toc-problem-setup" class="nav-link" data-scroll-target="#problem-setup">Problem setup</a></li>
+  <li><a href="#futureverse-vision" id="toc-futureverse-vision" class="nav-link" data-scroll-target="#futureverse-vision">Futureverse vision</a></li>
+  <li><a href="#solutions" id="toc-solutions" class="nav-link" data-scroll-target="#solutions">Solution(s)</a></li>
+  </ul></li>
+  <li><a href="#wrong-index-information-upon-error-in-furrr" id="toc-wrong-index-information-upon-error-in-furrr" class="nav-link" data-scroll-target="#wrong-index-information-upon-error-in-furrr">Wrong index information upon error in {<strong>furrr</strong>}</a></li>
+  <li><a href="#futureverse-optimised-blas-mkl-openblas-veclib" id="toc-futureverse-optimised-blas-mkl-openblas-veclib" class="nav-link" data-scroll-target="#futureverse-optimised-blas-mkl-openblas-veclib">Futureverse + optimised BLAS (MKL, OpenBLAS, vecLib)</a>
+  <ul class="collapse">
+  <li><a href="#context" id="toc-context" class="nav-link" data-scroll-target="#context">Context</a></li>
+  <li><a href="#problem-setup-1" id="toc-problem-setup-1" class="nav-link" data-scroll-target="#problem-setup-1">Problem setup</a></li>
+  <li><a href="#use-of-parallelization-in-optimized-blas-libraries" id="toc-use-of-parallelization-in-optimized-blas-libraries" class="nav-link" data-scroll-target="#use-of-parallelization-in-optimized-blas-libraries">Use of parallelization in optimized BLAS libraries</a></li>
+  <li><a href="#example-1-matrix-inversion" id="toc-example-1-matrix-inversion" class="nav-link" data-scroll-target="#example-1-matrix-inversion">Example 1: matrix inversion</a></li>
+  <li><a href="#example-2-matrix-product" id="toc-example-2-matrix-product" class="nav-link" data-scroll-target="#example-2-matrix-product">Example 2: matrix product</a></li>
+  <li><a href="#current-understanding" id="toc-current-understanding" class="nav-link" data-scroll-target="#current-understanding">Current understanding</a></li>
+  </ul></li>
+  <li><a href="#using-source-in-a-future" id="toc-using-source-in-a-future" class="nav-link" data-scroll-target="#using-source-in-a-future">Using <code>source()</code> in a future</a></li>
+  <li><a href="#sharing-big-matrices-between-r-processes" id="toc-sharing-big-matrices-between-r-processes" class="nav-link" data-scroll-target="#sharing-big-matrices-between-r-processes">Sharing big matrices between R processes</a></li>
+  <li><a href="#nested-parallelization-with-future" id="toc-nested-parallelization-with-future" class="nav-link" data-scroll-target="#nested-parallelization-with-future">Nested parallelization with <code>{future}</code></a>
+  <ul class="collapse">
+  <li><a href="#nested-task-definition" id="toc-nested-task-definition" class="nav-link" data-scroll-target="#nested-task-definition">Nested task definition</a></li>
+  <li><a href="#r-and-base-plan-with-future" id="toc-r-and-base-plan-with-future" class="nav-link" data-scroll-target="#r-and-base-plan-with-future"><code>R</code> and base <code>plan</code> with <code>{future}</code></a></li>
+  <li><a href="#nested-parallelization" id="toc-nested-parallelization" class="nav-link" data-scroll-target="#nested-parallelization">Nested parallelization</a></li>
+  <li><a href="#execution-time-summary-table" id="toc-execution-time-summary-table" class="nav-link" data-scroll-target="#execution-time-summary-table">Execution time summary table</a></li>
+  </ul></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Futureverse follow-up to the tutorial</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Authors</div>
+    <div class="quarto-title-meta-contents">
+             <p>Tristan Mary-Huard </p>
+             <p>Aymeric Stamm </p>
+             <p>Louis Lacoste </p>
+          </div>
+  </div>
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="error-handling" class="level2">
+<h2 class="anchored" data-anchor-id="error-handling">Error handling</h2>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Benchmarking
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>All time benchmarks are done using the <a href="https://cran.r-project.org/package=tictoc">{<strong>tictoc</strong>}</a> package and on a MacBook Pro 2021 with an Apple M1 Pro chip including 10 cores and 32 GB of RAM under Sonoma 14.5 macOS.</p>
+</div>
+</div>
+<section id="problem-setup" class="level3">
+<h3 class="anchored" data-anchor-id="problem-setup">Problem setup</h3>
+<p>Let us create a slow log function:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>slow_log <span class="ot">&lt;-</span> <span class="cf">function</span>(x) {</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">Sys.sleep</span>(<span class="dv">1</span>)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">log</span>(x)</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>We can apply this function to the integers from 1 to 10 for example using <code>purrr::map_dbl()</code>:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>x1 <span class="ot">&lt;-</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">10</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tic</span>()</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>purrr<span class="sc">::</span><span class="fu">map_dbl</span>(x1, slow_log)</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="fu">toc</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<pre><code>  [1] 0.0000000 0.6931472 1.0986123 1.3862944 1.6094379 1.7917595 1.9459101
+  [8] 2.0794415 2.1972246 2.3025851
+
+10.064 sec elapsed</code></pre>
+<p>As expected, it takes 10 seconds to run.</p>
+<p>We can parallelize this computation using <code>furrr::future_map_dbl()</code>:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plan</span>(multisession, <span class="at">workers =</span> <span class="dv">2</span>)</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="fu">tic</span>()</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>furrr<span class="sc">::</span><span class="fu">future_map_dbl</span>(x1, slow_log)</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="fu">toc</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<pre><code>  [1] 0.0000000 0.6931472 1.0986123 1.3862944 1.6094379 1.7917595 1.9459101
+  [8] 2.0794415 2.1972246 2.3025851
+
+5.256 sec elapsed</code></pre>
+<p>As expected, it takes 5 seconds to run.</p>
+<p>Now, assume that the last input value has wrongly be stored as character. Then the previous run will fail with an error. Let us see this in action:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>x2 <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fu">as.list</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">9</span>), <span class="st">"10"</span>)</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="fu">tic</span>()</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>furrr<span class="sc">::</span><span class="fu">future_map_dbl</span>(x2, slow_log)</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="fu">toc</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<pre><code>Error:
+ℹ In index: 5.
+Caused by error in `log()`:
+! non-numeric argument to mathematical function
+
+5.231 sec elapsed</code></pre>
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Apparent problem
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>We typically parallelize long time-consuming computations. In the context of map-reduce operations, we can have a situation where one of the tasks fails possibly after a large number of computations that succeeded. This can happen for example if the input data is not as expected. In this case, the error is caught and relayed to the user but the computation stops and elements on which computation succeeded are not returned. This is not ideal as we would like (i) to continue the computation on the other tasks and (ii) to have a way to retrieve the results of the tasks that succeeded and even of the computations that succeeded on the failed task.</p>
+</div>
+</div>
+</section>
+<section id="futureverse-vision" class="level3">
+<h3 class="anchored" data-anchor-id="futureverse-vision">Futureverse vision</h3>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Design strategy
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>The goal of the future framework in the context of map-reduce operations, is to help with paralellizing the application of a long-running function to a large number of inputs.</p>
+<p>If the long-running function fails on some inputs, the future framework chooses by design to behave consistently with the function that is applied. This means that if the function fails on some inputs, the future framework will stop the computation and return an error.</p>
+<p>The reason for this design choice is that the future framework is responsible for the parallelization of the function application, but not for the function itself. The function is responsible for its own error handling. This design choice is consistent with the principle of separation of concerns.</p>
+</div>
+</div>
+<p>Indeed, the problem is already here with <code>purrr::map_dbl()</code>:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tic</span>()</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>purrr<span class="sc">::</span><span class="fu">map_dbl</span>(x2, slow_log)</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="fu">toc</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<pre><code>Error in `purrr::map_dbl()`:
+ℹ In index: 10.
+Caused by error in `log()`:
+! non-numeric argument to mathematical function
+
+10.107 sec elapsed</code></pre>
+<p>The error is caught, the computation stops and no result is returned. One may think that this is due to the <code>purrr::map_dbl()</code> function and might try to use <code>lapply()</code> instead:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tic</span>()</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="fu">lapply</span>(x2, slow_log)</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="fu">toc</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<pre><code>Error in log(x): non-numeric argument to mathematical function
+
+10.048 sec elapsed</code></pre>
+<p>But the result is the same. The error is caught, the computation stops and no result is returned.</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+True problem
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>The underlying problem is that, <em>in the context of applying the long-running <code>slow_log()</code> function repeatedly</em>, we are not happy with the default behavior of stopping the computation when an error occurs in the <code>base::log()</code> function.</p>
+</div>
+</div>
+</section>
+<section id="solutions" class="level3">
+<h3 class="anchored" data-anchor-id="solutions">Solution(s)</h3>
+<p>The encouraged solution is therefore to handle the error in the function itself and to return a sentinel value when an error occurs. This way, the computation can continue until the end and we can retrieve the results of the tasks that succeeded.</p>
+<p>We can for example implement a new version of the <code>slow_log()</code> function that returns <code>NA</code> when an error occurs and issues a warning instead of an error:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>slow_log2 <span class="ot">&lt;-</span> <span class="cf">function</span>(x) {</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tryCatch</span>({</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">slow_log</span>(x)</span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>  }, <span class="at">error =</span> <span class="cf">function</span>(e) {</span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">warning</span>(<span class="fu">conditionMessage</span>(e))</span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>    <span class="cn">NA_real_</span></span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>  })</span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>We can then parallelize this computation using <code>furrr::future_map_dbl()</code>:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plan</span>(multisession, <span class="at">workers =</span> <span class="dv">2</span>)</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="fu">tic</span>()</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>furrr<span class="sc">::</span><span class="fu">future_map_dbl</span>(x2, slow_log2)</span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a><span class="fu">toc</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<pre><code>Warning in value[[3L]](cond): non-numeric argument to mathematical function
+
+ [1] 0.0000000 0.6931472 1.0986123 1.3862944 1.6094379 1.7917595 1.9459101
+ [8] 2.0794415 2.1972246        NA
+
+5.279 sec elapsed</code></pre>
+<p>As expected, it takes 5 seconds to run. Futhermore, it does not stop when an error occurs and returns <code>NA</code> for the failed computation which allows for the computation to continue until the end and retrieve the results of the tasks that succeeded.</p>
+<p>However, one could argue that the warning message is not informative enough because it does not give an indication of which input caused the error. Ideally one would like to know the index of the input that caused the error <strong>in the original input list of values</strong>. This requires to handle the error as a warning at the level of the <code>future_map_dbl()</code> function and therefore one can define a <code>future_map_log()</code> function which may look like this:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>future_map_log <span class="ot">&lt;-</span> <span class="cf">function</span>(.x, ..., </span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>                           <span class="at">.options =</span> furrr<span class="sc">::</span><span class="fu">furrr_options</span>(), </span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>                           <span class="at">.env_globals =</span> <span class="fu">parent.frame</span>(), </span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>                           <span class="at">.progress =</span> <span class="cn">FALSE</span>) {</span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>  furrr<span class="sc">::</span><span class="fu">future_imap_dbl</span>(.x, \(x, y) {</span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>    <span class="fu">tryCatch</span>({</span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a>      <span class="fu">slow_log</span>(x)</span>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a>    }, <span class="at">error =</span> <span class="cf">function</span>(e) {</span>
+<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a>      cli<span class="sc">::</span><span class="fu">cli_alert_warning</span>(<span class="st">"Non-numeric input at index {y}"</span>)</span>
+<span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a>      <span class="cn">NA_real_</span></span>
+<span id="cb16-11"><a href="#cb16-11" aria-hidden="true" tabindex="-1"></a>    })</span>
+<span id="cb16-12"><a href="#cb16-12" aria-hidden="true" tabindex="-1"></a>  }, <span class="at">.options =</span> .options, <span class="at">.env_globals =</span> .env_globals, <span class="at">.progress =</span> .progress)</span>
+<span id="cb16-13"><a href="#cb16-13" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>This leads to:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plan</span>(multisession, <span class="at">workers =</span> <span class="dv">2</span>)</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="fu">tic</span>()</span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a><span class="fu">future_map_log</span>(x2)</span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a><span class="fu">toc</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<pre><code>! Non-numeric input at index 10
+
+ [1] 0.0000000 0.6931472 1.0986123 1.3862944 1.6094379 1.7917595 1.9459101
+ [8] 2.0794415 2.1972246        NA
+
+5.301 sec elapsed</code></pre>
+<p>You can find more details in Henrik Bengsston’s vignette dedicated to <a href="https://cran.r-project.org/web/packages/future/vignettes/future-4-issues.html">common issues with futures</a>.</p>
+</section>
+</section>
+<section id="wrong-index-information-upon-error-in-furrr" class="level2">
+<h2 class="anchored" data-anchor-id="wrong-index-information-upon-error-in-furrr">Wrong index information upon error in <a href="https://furrr.futureverse.org">{<strong>furrr</strong>}</a></h2>
+<p>When using the <a href="https://purrr.tidyverse.org">{<strong>purrr</strong>}</a> package to manipulate lists instead of base R <code>*apply()</code> family, the user gets to know the index of the element that caused an error:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>purrr<span class="sc">::</span><span class="fu">map_dbl</span>(<span class="fu">list</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="st">"4"</span>), log)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-error">
+<pre><code>Error in `purrr::map_dbl()`:
+ℹ In index: 4.
+Caused by error:
+! non-numeric argument to mathematical function</code></pre>
+</div>
+</div>
+<p>Parallel versions of the <code>purrr::*map*()</code> functions are provided by the <a href="https://furrr.futureverse.org">{<strong>furrr</strong>}</a> package. We would expect the same behavior when an error occurs in a future:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plan</span>(multisession, <span class="at">workers =</span> <span class="dv">2</span>)</span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>furrr<span class="sc">::</span><span class="fu">future_map_dbl</span>(<span class="fu">list</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="st">"4"</span>), log)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-error">
+<pre><code>Error:
+ℹ In index: 2.
+Caused by error:
+! non-numeric argument to mathematical function</code></pre>
+</div>
+</div>
+<p>This is not the case. The error message does not provide the correct index of the element that caused the error. What it currently does is to provide the index in the subset of the data that was sent to the worker that failed. This is not very helpful as the user is interested in the index in the original data. This is a known issue and is discussed in Issue <a href="https://github.com/DavisVaughan/furrr/issues/250">#250</a> on the GitHub repository of the package.</p>
+<p>In the meantime, a workaround is to use the idea behind the <code>purrr::imap_*</code> functions which keeps track of the index of the element in the original list:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>my_future_map_dbl <span class="ot">&lt;-</span> <span class="cf">function</span>(.x, .f, ..., </span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>                              <span class="at">.options =</span> furrr<span class="sc">::</span><span class="fu">furrr_options</span>(), </span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>                              <span class="at">.env_globals =</span> <span class="fu">parent.frame</span>(), </span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a>                              <span class="at">.progress =</span> <span class="cn">FALSE</span>) {</span>
+<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a>  furrr<span class="sc">::</span><span class="fu">future_imap_dbl</span>(.x, \(x, y) {</span>
+<span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a>    <span class="fu">tryCatch</span>({</span>
+<span id="cb23-7"><a href="#cb23-7" aria-hidden="true" tabindex="-1"></a>      <span class="fu">.f</span>(x)</span>
+<span id="cb23-8"><a href="#cb23-8" aria-hidden="true" tabindex="-1"></a>    }, <span class="at">error =</span> <span class="cf">function</span>(e) {</span>
+<span id="cb23-9"><a href="#cb23-9" aria-hidden="true" tabindex="-1"></a>      cli<span class="sc">::</span><span class="fu">cli_alert_danger</span>(<span class="st">"Non-numeric input at index {y} in the original input list."</span>, <span class="at">wrap =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb23-10"><a href="#cb23-10" aria-hidden="true" tabindex="-1"></a>      cli<span class="sc">::</span><span class="fu">cli_alert_warning</span>(<span class="st">"The index mentioned in the message below refers to the subset of the data that was sent to the worker that failed."</span>, <span class="at">wrap =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb23-11"><a href="#cb23-11" aria-hidden="true" tabindex="-1"></a>    })</span>
+<span id="cb23-12"><a href="#cb23-12" aria-hidden="true" tabindex="-1"></a>  }, <span class="at">.options =</span> .options, <span class="at">.env_globals =</span> .env_globals, <span class="at">.progress =</span> .progress)</span>
+<span id="cb23-13"><a href="#cb23-13" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>This leads to:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plan</span>(multisession, <span class="at">workers =</span> <span class="dv">2</span>)</span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a><span class="fu">my_future_map_dbl</span>(<span class="fu">list</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="st">"4"</span>), log)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>✖ Non-numeric input at index 4 in the original input list.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>! The index mentioned in the message below refers to the subset of the data
+that was sent to the worker that failed.</code></pre>
+</div>
+<div class="cell-output cell-output-error">
+<pre><code>Error:
+ℹ In index: 2.
+Caused by error:
+! Can't coerce from a string to a double.</code></pre>
+</div>
+</div>
+</section>
+<section id="futureverse-optimised-blas-mkl-openblas-veclib" class="level2">
+<h2 class="anchored" data-anchor-id="futureverse-optimised-blas-mkl-openblas-veclib">Futureverse + optimised BLAS (MKL, OpenBLAS, vecLib)</h2>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Benchmarking
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>All time benchmarks are done using the <a href="https://cran.r-project.org/package=tictoc">{<strong>tictoc</strong>}</a> package and on a Dell computer with Intel(R) Xeon(R) W-10885M CPU @ 2.40GHz processor including 8 cores and 64 GB of RAM under Windows 11.</p>
+</div>
+</div>
+<section id="context" class="level3">
+<h3 class="anchored" data-anchor-id="context">Context</h3>
+<p>It is possible to boost matrix calculations in R by replacing the default BLAS library with an optimized one. The most popular optimized BLAS libraries are Intel’s Math Kernel Library (MKL), OpenBLAS and vecLib (on macOS). See these articles for how to setup and/or some benchmarking:</p>
+<ul>
+<li><a href="https://thomasmcrow.com/blog/2021-08-optimized-blas-in-r/" class="uri">https://thomasmcrow.com/blog/2021-08-optimized-blas-in-r/</a></li>
+<li><a href="https://mpopov.com/blog/2019/06/04/faster-matrix-math-in-r-on-macos/" class="uri">https://mpopov.com/blog/2019/06/04/faster-matrix-math-in-r-on-macos/</a></li>
+<li><a href="https://csantill.github.io/RPerformanceWBLAS/" class="uri">https://csantill.github.io/RPerformanceWBLAS/</a></li>
+<li><a href="https://stateofther.github.io/finistR2023/Intel_MKL.html" class="uri">https://stateofther.github.io/finistR2023/Intel_MKL.html</a></li>
+</ul>
+<p>These optimized BLAS libraries are typically faster than the default BLAS library that comes with R by exploiting vectorization and parallelization.</p>
+</section>
+<section id="problem-setup-1" class="level3">
+<h3 class="anchored" data-anchor-id="problem-setup-1">Problem setup</h3>
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Problem
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>The problem is that combining the optimized BLAS libraries with the future framework seems to deteriorate the performance of the optimized BLAS and leads to increased computation time.</p>
+</div>
+</div>
+</section>
+<section id="use-of-parallelization-in-optimized-blas-libraries" class="level3">
+<h3 class="anchored" data-anchor-id="use-of-parallelization-in-optimized-blas-libraries">Use of parallelization in optimized BLAS libraries</h3>
+<p>By default, it uses all available cores. However, the optimization is mostly due to vectorization and rather than parallelization. See this <a href="https://blog.revolutionanalytics.com/2015/10/edge-cases-in-using-the-intel-mkl-and-parallel-programming.html">webpage</a> for a better understanding of the gain one can expect from MKL. Importantly, it is mentioned that:</p>
+<blockquote class="blockquote">
+<p>Most of the benefit of the Intel MKL is from vectorised math, not multi-threading. A big performance boost when using the MKL with just one thread. A marginal increase when using 4 threads, most notable in matrix multiply, and no benefit for singular value decomposition.</p>
+</blockquote>
+<p>Another resource on HCP <a href="https://uschpc.github.io/workshop-r-hpc/#1">here</a>.</p>
+</section>
+<section id="example-1-matrix-inversion" class="level3">
+<h3 class="anchored" data-anchor-id="example-1-matrix-inversion">Example 1: matrix inversion</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Have a look at the nb of cores / threads</span></span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a><span class="do">## Nb cores</span></span>
+<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a>RhpcBLASctl<span class="sc">::</span><span class="fu">get_num_cores</span>()</span>
+<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a><span class="do">## Nb threads </span></span>
+<span id="cb28-5"><a href="#cb28-5" aria-hidden="true" tabindex="-1"></a>RhpcBLASctl<span class="sc">::</span><span class="fu">get_num_procs</span>()</span>
+<span id="cb28-6"><a href="#cb28-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-7"><a href="#cb28-7" aria-hidden="true" tabindex="-1"></a><span class="do">## Generate a list of matrices to inverse</span></span>
+<span id="cb28-8"><a href="#cb28-8" aria-hidden="true" tabindex="-1"></a>N <span class="ot">&lt;-</span> <span class="dv">16</span>    <span class="do">## Matrix number</span></span>
+<span id="cb28-9"><a href="#cb28-9" aria-hidden="true" tabindex="-1"></a>p <span class="ot">&lt;-</span> <span class="dv">2000</span>   <span class="do">## Matrix size</span></span>
+<span id="cb28-10"><a href="#cb28-10" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">lapply</span>(<span class="dv">1</span><span class="sc">:</span>N, \(i) <span class="fu">matrix</span>(<span class="fu">rnorm</span>(p <span class="sc">*</span> p), p, p) <span class="sc">+</span> <span class="fu">diag</span>(p))</span>
+<span id="cb28-11"><a href="#cb28-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-12"><a href="#cb28-12" aria-hidden="true" tabindex="-1"></a><span class="do">## Make a function that controls the number of threads used by the math lib </span></span>
+<span id="cb28-13"><a href="#cb28-13" aria-hidden="true" tabindex="-1"></a><span class="do">## to compute the matrix inverse</span></span>
+<span id="cb28-14"><a href="#cb28-14" aria-hidden="true" tabindex="-1"></a>compute_inv <span class="ot">&lt;-</span> <span class="cf">function</span>(x, <span class="at">nbthr =</span> <span class="dv">1</span>) {</span>
+<span id="cb28-15"><a href="#cb28-15" aria-hidden="true" tabindex="-1"></a>  RhpcBLASctl<span class="sc">::</span><span class="fu">blas_set_num_threads</span>(<span class="at">threads =</span> nbthr)</span>
+<span id="cb28-16"><a href="#cb28-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">solve</span>(x)</span>
+<span id="cb28-17"><a href="#cb28-17" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Default </span></span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a><span class="fu">tic</span>()</span>
+<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a>res <span class="ot">&lt;-</span> <span class="fu">lapply</span>(x, solve)</span>
+<span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a><span class="fu">toc</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<pre><code>2.56 sec elapsed</code></pre>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Then disable MKL parallel computation</span></span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a><span class="fu">tic</span>()</span>
+<span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a>res <span class="ot">&lt;-</span> <span class="fu">lapply</span>(x, compute_inv, <span class="at">nbthr =</span> <span class="dv">1</span>)</span>
+<span id="cb31-4"><a href="#cb31-4" aria-hidden="true" tabindex="-1"></a><span class="fu">toc</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<pre><code>2.71 sec elapsed</code></pre>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Then use future but without parallelization</span></span>
+<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plan</span>(sequential)</span>
+<span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a><span class="fu">tic</span>()</span>
+<span id="cb33-4"><a href="#cb33-4" aria-hidden="true" tabindex="-1"></a>res <span class="ot">&lt;-</span> furrr<span class="sc">::</span><span class="fu">future_map</span>(x, compute_inv, <span class="at">nbthr =</span> <span class="dv">1</span>)</span>
+<span id="cb33-5"><a href="#cb33-5" aria-hidden="true" tabindex="-1"></a><span class="fu">toc</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<pre><code>2.8 sec elapsed</code></pre>
+<p>Reducing the nb of threads does not affect the computational time! The computational cost reduction is due to vectorization, not multi-threading.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Now use 2 workers</span></span>
+<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plan</span>(multisession, <span class="at">workers =</span> <span class="dv">2</span>)</span>
+<span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a><span class="fu">tic</span>()</span>
+<span id="cb35-4"><a href="#cb35-4" aria-hidden="true" tabindex="-1"></a>res <span class="ot">&lt;-</span> furrr<span class="sc">::</span><span class="fu">future_map</span>(x, compute_inv, <span class="at">nbthr =</span> <span class="dv">1</span>)</span>
+<span id="cb35-5"><a href="#cb35-5" aria-hidden="true" tabindex="-1"></a><span class="fu">toc</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<pre><code>4.19 sec elapsed</code></pre>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Now use 4 workers</span></span>
+<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plan</span>(multisession, <span class="at">workers =</span> <span class="dv">4</span>)</span>
+<span id="cb37-3"><a href="#cb37-3" aria-hidden="true" tabindex="-1"></a><span class="fu">tic</span>()</span>
+<span id="cb37-4"><a href="#cb37-4" aria-hidden="true" tabindex="-1"></a>res <span class="ot">&lt;-</span> furrr<span class="sc">::</span><span class="fu">future_map</span>(x, compute_inv, <span class="at">nbthr =</span> <span class="dv">1</span>)</span>
+<span id="cb37-5"><a href="#cb37-5" aria-hidden="true" tabindex="-1"></a><span class="fu">toc</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<pre><code>5.03 sec elapsed</code></pre>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb39"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Now use 8 workers</span></span>
+<span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plan</span>(multisession, <span class="at">workers =</span> <span class="dv">8</span>)</span>
+<span id="cb39-3"><a href="#cb39-3" aria-hidden="true" tabindex="-1"></a><span class="fu">tic</span>()</span>
+<span id="cb39-4"><a href="#cb39-4" aria-hidden="true" tabindex="-1"></a>res <span class="ot">&lt;-</span> furrr<span class="sc">::</span><span class="fu">future_map</span>(x, compute_inv, <span class="at">nbthr =</span> <span class="dv">1</span>)</span>
+<span id="cb39-5"><a href="#cb39-5" aria-hidden="true" tabindex="-1"></a><span class="fu">toc</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<pre><code>5.5 sec elapsed</code></pre>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb41"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Now use 16 workers</span></span>
+<span id="cb41-2"><a href="#cb41-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plan</span>(multisession, <span class="at">workers =</span> <span class="dv">16</span>)</span>
+<span id="cb41-3"><a href="#cb41-3" aria-hidden="true" tabindex="-1"></a><span class="fu">tic</span>()</span>
+<span id="cb41-4"><a href="#cb41-4" aria-hidden="true" tabindex="-1"></a>res <span class="ot">&lt;-</span> furrr<span class="sc">::</span><span class="fu">future_map</span>(x, compute_inv, <span class="at">nbthr =</span> <span class="dv">1</span>)</span>
+<span id="cb41-5"><a href="#cb41-5" aria-hidden="true" tabindex="-1"></a><span class="fu">toc</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<pre><code>7.68 sec elapsed</code></pre>
+<p>Systematic downgrading of the performance, the higher the nb of workers, the higher the computational time.</p>
+</section>
+<section id="example-2-matrix-product" class="level3">
+<h3 class="anchored" data-anchor-id="example-2-matrix-product">Example 2: matrix product</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb43"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Generate a list of pairs of matrices to multiply with a ref matrix</span></span>
+<span id="cb43-2"><a href="#cb43-2" aria-hidden="true" tabindex="-1"></a>N <span class="ot">&lt;-</span> <span class="dv">16</span>    <span class="do">## Matrix number</span></span>
+<span id="cb43-3"><a href="#cb43-3" aria-hidden="true" tabindex="-1"></a>NbRow <span class="ot">&lt;-</span> <span class="dv">5000</span>   <span class="do">## Matrix nb row</span></span>
+<span id="cb43-4"><a href="#cb43-4" aria-hidden="true" tabindex="-1"></a>NbCol <span class="ot">&lt;-</span> <span class="dv">1000</span>   <span class="do">## Matrix nb row</span></span>
+<span id="cb43-5"><a href="#cb43-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb43-6"><a href="#cb43-6" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">lapply</span>(<span class="dv">1</span><span class="sc">:</span>N, \(i) <span class="fu">matrix</span>(<span class="fu">rnorm</span>(NbRow <span class="sc">*</span> NbCol), NbRow, NbCol))</span>
+<span id="cb43-7"><a href="#cb43-7" aria-hidden="true" tabindex="-1"></a>RefMat <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="fu">rnorm</span>(NbRow <span class="sc">*</span> NbCol), NbRow, NbCol) </span>
+<span id="cb43-8"><a href="#cb43-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb43-9"><a href="#cb43-9" aria-hidden="true" tabindex="-1"></a><span class="do">## Make a function that controls the number of threads used by the math lib </span></span>
+<span id="cb43-10"><a href="#cb43-10" aria-hidden="true" tabindex="-1"></a><span class="do">## to compute the matrix crossprod</span></span>
+<span id="cb43-11"><a href="#cb43-11" aria-hidden="true" tabindex="-1"></a>ComputeProd <span class="ot">&lt;-</span> <span class="cf">function</span>(x,<span class="at">nbthr=</span><span class="dv">1</span>){</span>
+<span id="cb43-12"><a href="#cb43-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">blas_set_num_threads</span>(<span class="at">threads =</span> nbthr)</span>
+<span id="cb43-13"><a href="#cb43-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">crossprod</span>(x,RefMat)</span>
+<span id="cb43-14"><a href="#cb43-14" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Using the same setup as for Example 1, we get the following computational times:</p>
+<ul>
+<li>Default (MKL parallel computation): 0.67 sec;</li>
+<li>Disable MKL parallel computation: 2.74 sec;</li>
+<li>Future without parallelization: 2.95 sec;</li>
+<li>Future with 2 workers: 2.95 sec;</li>
+<li>Future with 4 workers: 2.89 sec;</li>
+<li>Future with 8 workers: 4 sec;</li>
+<li>Future with 16 workers: 6.71 sec.</li>
+</ul>
+</section>
+<section id="current-understanding" class="level3">
+<h3 class="anchored" data-anchor-id="current-understanding">Current understanding</h3>
+<p>For now the results are not intuitive at all:</p>
+<ul>
+<li>solve mostly makes use of vectorization from MKL, as illustrated by the fact that changing the number of threads does not change the performance;</li>
+<li>in contrast, crossprod benefits from multi-threading: reducing the number of threads downgrades the computational speed.</li>
+</ul>
+<p>So we expect that reducing the number of threads to <span class="math inline">\(1\)</span> will not hamper <code>solve()</code>, allowing the use of futures for parallelization over matrices. We should observe some (significant ?) gain. However, as soon as we increase the number of workers, we downgrade the performance. Differently, in the matrix product case, if we reduce the number of threads used by MKL, we allow for parallelization over matrices via futures but at the cost of some increase in computational time for each cross product. So there seems to be a trade-off, possibly hard to deal with, between the implicit multi-threading of MKL and the explicit one of future. However we basically observe no impact when the number of workers is low, and a downgrade when it is increased…</p>
+</section>
+</section>
+<section id="using-source-in-a-future" class="level2">
+<h2 class="anchored" data-anchor-id="using-source-in-a-future">Using <code>source()</code> in a future</h2>
+<p>According to Henrik Bengsston’s vignette dedicated to <a href="https://cran.r-project.org/web/packages/future/vignettes/future-4-issues.html">common issues with futures</a>:</p>
+<blockquote class="blockquote">
+<p>Avoid using <code>source()</code> inside futures. It is always better to source external R scripts at the top of your main R script, e.g.</p>
+</blockquote>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb44"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(future)</span>
+<span id="cb44-2"><a href="#cb44-2" aria-hidden="true" tabindex="-1"></a><span class="fu">source</span>(<span class="st">"./my-script.R"</span>)</span>
+<span id="cb44-3"><a href="#cb44-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb44-4"><a href="#cb44-4" aria-hidden="true" tabindex="-1"></a>f <span class="ot">&lt;-</span> <span class="fu">future</span>({</span>
+<span id="cb44-5"><a href="#cb44-5" aria-hidden="true" tabindex="-1"></a>  ...</span>
+<span id="cb44-6"><a href="#cb44-6" aria-hidden="true" tabindex="-1"></a>})</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<blockquote class="blockquote">
+<p>However, if you find yourself having to source a script inside a future, or inside a function, make sure to specify argument <code>local = TRUE</code>, e.g.</p>
+</blockquote>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb45"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a>f <span class="ot">&lt;-</span> <span class="fu">future</span>({</span>
+<span id="cb45-2"><a href="#cb45-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">source</span>(<span class="st">"./my-script.R"</span>, <span class="at">local =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb45-3"><a href="#cb45-3" aria-hidden="true" tabindex="-1"></a>  ...</span>
+<span id="cb45-4"><a href="#cb45-4" aria-hidden="true" tabindex="-1"></a>})</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<blockquote class="blockquote">
+<p>This is because <code>source()</code> defaults to <code>local = FALSE</code>, which has side effects. When using <code>local = FALSE</code>, any functions or variables defined by the R script are assigned to the global environment - not the calling environment as we might expect. This may make little different when calling <code>source()</code> from the R prompt, or from another script. However, when called from inside a function, inside <code>local()</code>, or inside a future, it might result in unexpected behavior. It is similar to using <code>assign("a", 42, envir = globalenv())</code>, which is known be a bad practice. To be on the safe side, it is almost always better call <code>source()</code> with <code>local = TRUE</code>.</p>
+</blockquote>
+</section>
+<section id="sharing-big-matrices-between-r-processes" class="level2">
+<h2 class="anchored" data-anchor-id="sharing-big-matrices-between-r-processes">Sharing big matrices between R processes</h2>
+<blockquote class="blockquote">
+<p>The <a href="https://cran.r-project.org/package=bigmemory">{<strong>bigmemory</strong>}</a> package provides mechanisms for working with very large matrices that can be updated in-place, which helps save memory.</p>
+</blockquote>
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Problem of non-exportable objects
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<blockquote class="blockquote">
+<p>Some types of R objects can be used only in the R session they were created. If used as-is in another R process, such objects often result in an immediate error or in obscure and hard-to-troubleshoot outcomes. Because of this, they cannot be saved to file and re-used at a later time. They may also not be exported to a parallel worker when doing parallel processing. These objects are sometimes referred to as non-exportable or non-serializable objects.</p>
+</blockquote>
+</div>
+</div>
+<p>Objects of class <code>big.matrix</code> are non-exportable as-is. This means that they cannot be exported to a parallel worker when doing parallel processing. This is because the object is a reference to a memory-mapped file, and the worker does not have access to the memory-mapped file.</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+The marshalling solution
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<blockquote class="blockquote">
+<p>One solution to this problem is to use “marshalling” to encode the R object into an exportable representation that then can be used to re-create a copy of that object in another R process that imitates the original object.</p>
+</blockquote>
+</div>
+</div>
+<blockquote class="blockquote">
+<p>The <a href="https://marshal.futureverse.org/index.html">{<strong>marshal</strong>}</a> package provides generic functions <code>marshal()</code> and <code>unmarshal()</code> for marshalling and unmarshalling R objects of certain class. This makes it possible to save otherwise non-exportable objects to file and then be used in a future R session, or to transfer them to another R process to be used there.</p>
+</blockquote>
+<p>As part of the development of the marshal package, the author has listed a number of classes that are non-exportable and assessed whether they can be marshalled and whether they must be marshalled. The list is available in an article from the package website <a href="https://marshal.futureverse.org/articles/known_cases.html">here</a>. One can see that the class <code>big.matrix</code> is in the list of non-exportable classes and has been assessed as a class that can and must be marshalled. This means that the marshal package will soon be able to marshal and unmarshal objects of class <code>big.matrix</code>.</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Active working group on marshalling and serialization
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>May 2024: The R Consortium ISC Working Group <a href="https://github.com/RConsortium/marshalling-wg">‘Marshaling and Serialization in R’</a> has been launched to work on this problem. So we can expect some progress in the near future.</p>
+</div>
+</div>
+</section>
+<section id="nested-parallelization-with-future" class="level2">
+<h2 class="anchored" data-anchor-id="nested-parallelization-with-future">Nested parallelization with <code>{future}</code></h2>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Benchmarking
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>All time benchmarks are done using the <a href="https://cran.r-project.org/package=tictoc">{<strong>tictoc</strong>}</a> package and on a Lenovo LOQ 15IRH8 with an Intel i5-12450H including 12 cores and 16 GB of RAM under Ubuntu 24.04.1 LTS.</p>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb46"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(future)</span>
+<span id="cb46-2"><a href="#cb46-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(future.apply)</span>
+<span id="cb46-3"><a href="#cb46-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(future.callr)</span>
+<span id="cb46-4"><a href="#cb46-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(progressr)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<section id="nested-task-definition" class="level3">
+<h3 class="anchored" data-anchor-id="nested-task-definition">Nested task definition</h3>
+<p>We define the following task where we split a sum in sub-sums and perform this multiple times. To slow down computations, we use <code>progressr::slow_sum</code>.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb47"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a>delay <span class="ot">&lt;-</span> <span class="fl">0.5</span></span>
+<span id="cb47-2"><a href="#cb47-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb47-3"><a href="#cb47-3" aria-hidden="true" tabindex="-1"></a>list_sums <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>, <span class="dv">11</span><span class="sc">:</span><span class="dv">20</span>)</span>
+<span id="cb47-4"><a href="#cb47-4" aria-hidden="true" tabindex="-1"></a>list_list_sums <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="fu">list</span>(list_sums), <span class="dv">2</span>L)</span>
+<span id="cb47-5"><a href="#cb47-5" aria-hidden="true" tabindex="-1"></a>future_nested_loop <span class="ot">&lt;-</span> <span class="cf">function</span>() {</span>
+<span id="cb47-6"><a href="#cb47-6" aria-hidden="true" tabindex="-1"></a>    <span class="fu">unlist</span>(future.apply<span class="sc">::</span><span class="fu">future_lapply</span>(list_list_sums, <span class="cf">function</span>(l_sums) {</span>
+<span id="cb47-7"><a href="#cb47-7" aria-hidden="true" tabindex="-1"></a>        v_sums <span class="ot">&lt;-</span> <span class="fu">unlist</span>(</span>
+<span id="cb47-8"><a href="#cb47-8" aria-hidden="true" tabindex="-1"></a>            future.apply<span class="sc">::</span><span class="fu">future_lapply</span>(l_sums, slow_sum,</span>
+<span id="cb47-9"><a href="#cb47-9" aria-hidden="true" tabindex="-1"></a>                <span class="at">delay =</span> delay,</span>
+<span id="cb47-10"><a href="#cb47-10" aria-hidden="true" tabindex="-1"></a>                <span class="at">message =</span> <span class="cn">FALSE</span></span>
+<span id="cb47-11"><a href="#cb47-11" aria-hidden="true" tabindex="-1"></a>            )</span>
+<span id="cb47-12"><a href="#cb47-12" aria-hidden="true" tabindex="-1"></a>        )</span>
+<span id="cb47-13"><a href="#cb47-13" aria-hidden="true" tabindex="-1"></a>        <span class="fu">sum</span>(v_sums)</span>
+<span id="cb47-14"><a href="#cb47-14" aria-hidden="true" tabindex="-1"></a>    }))</span>
+<span id="cb47-15"><a href="#cb47-15" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Below we implement a checking function to ensure everything went fine and the returned result was correct.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb48"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a>expected_result <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="fu">sum</span>(<span class="fu">unlist</span>(list_sums)), <span class="fu">length</span>(list_list_sums))</span>
+<span id="cb48-2"><a href="#cb48-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-3"><a href="#cb48-3" aria-hidden="true" tabindex="-1"></a>check_result <span class="ot">&lt;-</span> <span class="cf">function</span>(task_time, task_result) {</span>
+<span id="cb48-4"><a href="#cb48-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (<span class="sc">!</span><span class="fu">all</span>(task_result <span class="sc">==</span> expected_result)) {</span>
+<span id="cb48-5"><a href="#cb48-5" aria-hidden="true" tabindex="-1"></a>        cli<span class="sc">::</span><span class="fu">cli_abort</span>(<span class="at">message =</span> <span class="fu">c</span>(<span class="st">"{task_time$msg} result do not match expected result"</span>,</span>
+<span id="cb48-6"><a href="#cb48-6" aria-hidden="true" tabindex="-1"></a>            <span class="st">"x"</span> <span class="ot">=</span> <span class="st">"Expected : {expected_result} got {task_result}"</span></span>
+<span id="cb48-7"><a href="#cb48-7" aria-hidden="true" tabindex="-1"></a>        ))</span>
+<span id="cb48-8"><a href="#cb48-8" aria-hidden="true" tabindex="-1"></a>    } <span class="cf">else</span> {</span>
+<span id="cb48-9"><a href="#cb48-9" aria-hidden="true" tabindex="-1"></a>        cli<span class="sc">::</span><span class="fu">cli_alert_success</span>(<span class="st">"Task returned expected result"</span>)</span>
+<span id="cb48-10"><a href="#cb48-10" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb48-11"><a href="#cb48-11" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="r-and-base-plan-with-future" class="level3">
+<h3 class="anchored" data-anchor-id="r-and-base-plan-with-future"><code>R</code> and base <code>plan</code> with <code>{future}</code></h3>
+<section id="base-r-and-plansequential" class="level4">
+<h4 class="anchored" data-anchor-id="base-r-and-plansequential">Base <code>R</code> and <code>plan(sequential)</code></h4>
+<p>With <code>R</code> base functions :</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb49"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb49-1"><a href="#cb49-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tic</span>(<span class="st">"Base R"</span>)</span>
+<span id="cb49-2"><a href="#cb49-2" aria-hidden="true" tabindex="-1"></a>base_r_result <span class="ot">&lt;-</span> <span class="fu">unlist</span>(<span class="fu">lapply</span>(list_list_sums, <span class="cf">function</span>(l_sums) {</span>
+<span id="cb49-3"><a href="#cb49-3" aria-hidden="true" tabindex="-1"></a>    v_sums <span class="ot">&lt;-</span> <span class="fu">unlist</span>(</span>
+<span id="cb49-4"><a href="#cb49-4" aria-hidden="true" tabindex="-1"></a>        <span class="fu">lapply</span>(l_sums, slow_sum, <span class="at">delay =</span> delay, <span class="at">message =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb49-5"><a href="#cb49-5" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb49-6"><a href="#cb49-6" aria-hidden="true" tabindex="-1"></a>    <span class="fu">sum</span>(v_sums)</span>
+<span id="cb49-7"><a href="#cb49-7" aria-hidden="true" tabindex="-1"></a>}))</span>
+<span id="cb49-8"><a href="#cb49-8" aria-hidden="true" tabindex="-1"></a>base_r_time <span class="ot">&lt;-</span> <span class="fu">toc</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Base R: 20.076 sec elapsed</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb51"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb51-1"><a href="#cb51-1" aria-hidden="true" tabindex="-1"></a><span class="fu">check_result</span>(<span class="at">task_time =</span> base_r_time, base_r_result)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>✔ Task returned expected result</code></pre>
+</div>
+</div>
+<p>With our delay values we have the following :</p>
+<ul>
+<li><span class="math inline">\(10 \times 0.5s\)</span> for each sub-sum.</li>
+<li><span class="math inline">\(2 \times 10 \times 0.5s\)</span> for each sub-list of sub-sum</li>
+</ul>
+<p>So <span class="math inline">\(2 \times 2 \times 10 \times 0.5 s\)</span> for the list of sub-lists of sub-sums, so <span class="math inline">\(20 s\)</span>. Which is what we approximately observe with <code>{tictoc}</code>:<br>
+<span class="math inline">\(20.076 s\)</span>.</p>
+<p>Avec le plan <code>sequential</code></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb53"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb53-1"><a href="#cb53-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plan</span>(sequential)</span>
+<span id="cb53-2"><a href="#cb53-2" aria-hidden="true" tabindex="-1"></a><span class="fu">tic</span>(<span class="st">"Future plan(sequential)"</span>)</span>
+<span id="cb53-3"><a href="#cb53-3" aria-hidden="true" tabindex="-1"></a>sequential_result <span class="ot">&lt;-</span> <span class="fu">future_nested_loop</span>()</span>
+<span id="cb53-4"><a href="#cb53-4" aria-hidden="true" tabindex="-1"></a>sequential_time <span class="ot">&lt;-</span> <span class="fu">toc</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Future plan(sequential): 20.145 sec elapsed</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb55"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb55-1"><a href="#cb55-1" aria-hidden="true" tabindex="-1"></a><span class="fu">check_result</span>(</span>
+<span id="cb55-2"><a href="#cb55-2" aria-hidden="true" tabindex="-1"></a>    <span class="at">task_time =</span> sequential_time,</span>
+<span id="cb55-3"><a href="#cb55-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">task_result =</span> sequential_result</span>
+<span id="cb55-4"><a href="#cb55-4" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>With <code>sequential</code> plan it takes <span class="math inline">\(20.145\)</span> s, which is comparable with<code>R</code> base functions.</p>
+</section>
+<section id="planmultisession" class="level4">
+<h4 class="anchored" data-anchor-id="planmultisession"><code>plan(multisession)</code></h4>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb56"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb56-1"><a href="#cb56-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plan</span>(<span class="fu">tweak</span>(<span class="st">"multisession"</span>, <span class="at">workers =</span> <span class="dv">2</span>L))</span>
+<span id="cb56-2"><a href="#cb56-2" aria-hidden="true" tabindex="-1"></a><span class="fu">tic</span>(<span class="st">"Future plan(tweak('multisession', workers = 2L))"</span>)</span>
+<span id="cb56-3"><a href="#cb56-3" aria-hidden="true" tabindex="-1"></a>multisession2_result <span class="ot">&lt;-</span> <span class="fu">future_nested_loop</span>()</span>
+<span id="cb56-4"><a href="#cb56-4" aria-hidden="true" tabindex="-1"></a>multisession2_time <span class="ot">&lt;-</span> <span class="fu">toc</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Future plan(tweak('multisession', workers = 2L)): 10.365 sec elapsed</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb58"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb58-1"><a href="#cb58-1" aria-hidden="true" tabindex="-1"></a><span class="fu">check_result</span>(</span>
+<span id="cb58-2"><a href="#cb58-2" aria-hidden="true" tabindex="-1"></a>    <span class="at">task_time =</span> multisession2_time,</span>
+<span id="cb58-3"><a href="#cb58-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">task_result =</span> multisession2_result</span>
+<span id="cb58-4"><a href="#cb58-4" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>✔ Task returned expected result</code></pre>
+</div>
+</div>
+<p>By allocating 2 workers with <code>multisession</code> we manage to obtain a duration below <code>sequential</code>: <span class="math inline">\(10.365\)</span> s.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb60"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb60-1"><a href="#cb60-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plan</span>(<span class="fu">multisession</span>(<span class="at">workers =</span> <span class="dv">4</span>L))</span>
+<span id="cb60-2"><a href="#cb60-2" aria-hidden="true" tabindex="-1"></a><span class="fu">tic</span>(<span class="st">"Future plan(multisession(workers = 4L))"</span>)</span>
+<span id="cb60-3"><a href="#cb60-3" aria-hidden="true" tabindex="-1"></a>multisession4_result <span class="ot">&lt;-</span> <span class="fu">future_nested_loop</span>()</span>
+<span id="cb60-4"><a href="#cb60-4" aria-hidden="true" tabindex="-1"></a>multisession4_time <span class="ot">&lt;-</span> <span class="fu">toc</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Future plan(multisession(workers = 4L)): 10.404 sec elapsed</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb62"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb62-1"><a href="#cb62-1" aria-hidden="true" tabindex="-1"></a><span class="fu">check_result</span>(</span>
+<span id="cb62-2"><a href="#cb62-2" aria-hidden="true" tabindex="-1"></a>    <span class="at">task_time =</span> multisession4_time,</span>
+<span id="cb62-3"><a href="#cb62-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">task_result =</span> multisession4_result</span>
+<span id="cb62-4"><a href="#cb62-4" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>✔ Task returned expected result</code></pre>
+</div>
+</div>
+<p>By allocating 4 workers, we observe no improvement, it takes: <span class="math inline">\(10.404\)</span> s.</p>
+<p>This is because <code>{future}</code> doesn’t leverage nested parallelization by default, the first <code>future_lapply</code> being on a two elements list, the maximal reduction time is obtained with two workers. The other two allocated in this example are not used.</p>
+</section>
+</section>
+<section id="nested-parallelization" class="level3">
+<h3 class="anchored" data-anchor-id="nested-parallelization">Nested parallelization</h3>
+<p>According to the documentation we can specify not only a single <code>plan</code> but a list of plans, that can apply to nested futures.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb64"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb64-1"><a href="#cb64-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plan</span>(<span class="fu">list</span>(multisession, multisession))</span>
+<span id="cb64-2"><a href="#cb64-2" aria-hidden="true" tabindex="-1"></a><span class="fu">tic</span>(<span class="st">"Future plan(list(multisession, multisession))"</span>)</span>
+<span id="cb64-3"><a href="#cb64-3" aria-hidden="true" tabindex="-1"></a>list_multisession_result <span class="ot">&lt;-</span> <span class="fu">future_nested_loop</span>()</span>
+<span id="cb64-4"><a href="#cb64-4" aria-hidden="true" tabindex="-1"></a>list_multisession_time <span class="ot">&lt;-</span> <span class="fu">toc</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Future plan(list(multisession, multisession)): 10.651 sec elapsed</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb66"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb66-1"><a href="#cb66-1" aria-hidden="true" tabindex="-1"></a><span class="fu">check_result</span>(</span>
+<span id="cb66-2"><a href="#cb66-2" aria-hidden="true" tabindex="-1"></a>    <span class="at">task_time =</span> list_multisession_time,</span>
+<span id="cb66-3"><a href="#cb66-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">task_result =</span> list_multisession_result</span>
+<span id="cb66-4"><a href="#cb66-4" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>✔ Task returned expected result</code></pre>
+</div>
+</div>
+<p>But at the opposite of what we expected, we do not lower the time taken but it increases ! The task takes: <span class="math inline">\(10.651\)</span> s.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>As Henrik Bengtsson explains in the vignette <a href="https://future.futureverse.org/articles/future-3-topologies.html#built-in-protection-against-recursive-parallelism"><em>Future Topologies</em></a>, <code>{future}</code> has a protection against recursive parallelism. And thus the second loop is not parallelized but forced to be sequential.</p>
+<p>The plan must thus be specified in a specific manner to work as intended.</p>
+</div>
+</div>
+<section id="plan-lists-with-explicit-parameters" class="level4">
+<h4 class="anchored" data-anchor-id="plan-lists-with-explicit-parameters">Plan lists with explicit parameters</h4>
+<p>Given the structure of our task we want the first loop to run on the 2 elements of the list in parallel, thus we need 2 workers for the first <code>future_lapply</code>.</p>
+<p>Each sub-list containing 2 elements, we want to allocate <em>each</em> 2 workers.</p>
+<p>As we want to parallelize the whole task we need: <span class="math inline">\(2 \times 2 =
+4\)</span> workers to allocate.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb68"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb68-1"><a href="#cb68-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plan</span>(<span class="fu">list</span>(<span class="fu">tweak</span>(multisession, <span class="at">workers =</span> <span class="dv">2</span>L), <span class="fu">tweak</span>(multisession, <span class="at">workers =</span> <span class="dv">2</span>L)))</span>
+<span id="cb68-2"><a href="#cb68-2" aria-hidden="true" tabindex="-1"></a><span class="fu">tic</span>(<span class="st">"Future plan(list(tweak(multisession, workers = 2L), tweak(multisession, workers = 2L)))"</span>)</span>
+<span id="cb68-3"><a href="#cb68-3" aria-hidden="true" tabindex="-1"></a>list_multisession2_2_result <span class="ot">&lt;-</span> rlang<span class="sc">::</span><span class="fu">try_fetch</span>(</span>
+<span id="cb68-4"><a href="#cb68-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">future_nested_loop</span>(),</span>
+<span id="cb68-5"><a href="#cb68-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">error =</span> <span class="cf">function</span>(cnd) <span class="fu">inform</span>(<span class="st">"Task failed."</span>, <span class="at">parent =</span> cnd)</span>
+<span id="cb68-6"><a href="#cb68-6" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in checkNumberOfLocalWorkers(workers): Careful, you are setting up 2
+localhost parallel workers with only 1 CPU cores available for this R process
+(per ‘mc.cores’), which could result in a 200% load. The soft limit is set to
+100%. Overusing the CPUs has negative impact on the current R process, but also
+on all other processes of yours and others running on the same machine. See
+help("parallelly.options", package = "parallelly") for how to override the soft
+and hard limits
+Warning in checkNumberOfLocalWorkers(workers): Careful, you are setting up 2
+localhost parallel workers with only 1 CPU cores available for this R process
+(per ‘mc.cores’), which could result in a 200% load. The soft limit is set to
+100%. Overusing the CPUs has negative impact on the current R process, but also
+on all other processes of yours and others running on the same machine. See
+help("parallelly.options", package = "parallelly") for how to override the soft
+and hard limits</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb70"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb70-1"><a href="#cb70-1" aria-hidden="true" tabindex="-1"></a>list_multisession2_2_time <span class="ot">&lt;-</span> <span class="fu">toc</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Future plan(list(tweak(multisession, workers = 2L), tweak(multisession, workers = 2L))): 6.349 sec elapsed</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb72"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb72-1"><a href="#cb72-1" aria-hidden="true" tabindex="-1"></a><span class="fu">check_result</span>(</span>
+<span id="cb72-2"><a href="#cb72-2" aria-hidden="true" tabindex="-1"></a>    <span class="at">task_time =</span> list_multisession2_2_time,</span>
+<span id="cb72-3"><a href="#cb72-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">task_result =</span> list_multisession2_2_result</span>
+<span id="cb72-4"><a href="#cb72-4" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>✔ Task returned expected result</code></pre>
+</div>
+</div>
+<p>With this plan we get some warnings, explaining the we are over-parallelizing. We get this message even if we have the correct number of cores (or workers) to properly run this task.</p>
+<p>This is <code>{future}</code> defense mecanism against recursive parallelism.</p>
+<div class="callout callout-style-default callout-caution callout-titled" title="Why shouldn't I ignore this warning">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Why shouldn’t I ignore this warning
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><code>{future}</code> has a soft limit (that gives warnings) and a hard limit, when reaching the hard limit (of 300% load per core) the future won’t run, even if there is enough available cores.</p>
+<p>The next callout block and next code block explains how to tell <code>{future}</code> that this plan is ok.</p>
+</div>
+</div>
+<div class="callout callout-style-default callout-important callout-titled" title="Let `{future}` know that we want recursive parallelism">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Let <code>{future}</code> know that we want recursive parallelism
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>To tell the package that we know what we are doing, we must use <code>I()</code> which gives <code>AsIs</code> class to the object it wraps.</p>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb74"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb74-1"><a href="#cb74-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plan</span>(<span class="fu">list</span>(<span class="fu">tweak</span>(multisession, <span class="at">workers =</span> <span class="dv">2</span>L), <span class="fu">tweak</span>(multisession, <span class="at">workers =</span> <span class="fu">I</span>(<span class="dv">2</span>L))))</span>
+<span id="cb74-2"><a href="#cb74-2" aria-hidden="true" tabindex="-1"></a><span class="fu">tic</span>(<span class="st">"Future plan(list(tweak(multisession, workers = 2L), tweak(multisession, workers = I(2L))))"</span>)</span>
+<span id="cb74-3"><a href="#cb74-3" aria-hidden="true" tabindex="-1"></a>list_multisession2_I2_result <span class="ot">&lt;-</span> rlang<span class="sc">::</span><span class="fu">try_fetch</span>(</span>
+<span id="cb74-4"><a href="#cb74-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">future_nested_loop</span>(),</span>
+<span id="cb74-5"><a href="#cb74-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">error =</span> <span class="cf">function</span>(cnd) <span class="fu">inform</span>(<span class="st">"Task failed."</span>, <span class="at">parent =</span> cnd)</span>
+<span id="cb74-6"><a href="#cb74-6" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb74-7"><a href="#cb74-7" aria-hidden="true" tabindex="-1"></a>list_multisession2_I2_time <span class="ot">&lt;-</span> <span class="fu">toc</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Future plan(list(tweak(multisession, workers = 2L), tweak(multisession, workers = I(2L)))): 6.396 sec elapsed</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb76"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb76-1"><a href="#cb76-1" aria-hidden="true" tabindex="-1"></a><span class="fu">check_result</span>(</span>
+<span id="cb76-2"><a href="#cb76-2" aria-hidden="true" tabindex="-1"></a>    <span class="at">task_time =</span> list_multisession2_I2_time,</span>
+<span id="cb76-3"><a href="#cb76-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">task_result =</span> list_multisession2_I2_result</span>
+<span id="cb76-4"><a href="#cb76-4" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>✔ Task returned expected result</code></pre>
+</div>
+</div>
+<p>And this way we can specify a working nested parallelization plan.</p>
+</section>
+<section id="with-future.callr" class="level4">
+<h4 class="anchored" data-anchor-id="with-future.callr">With <code>{future.callr}</code></h4>
+<p>The <code>{future.callr}</code> package solves some limitations of <code>future::multisession()</code> and do not need the use of <code>I()</code> as shown in the below example:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb78"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb78-1"><a href="#cb78-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plan</span>(<span class="fu">list</span>(<span class="fu">tweak</span>(callr, <span class="at">workers =</span> <span class="dv">2</span>L), <span class="fu">tweak</span>(callr, <span class="at">workers =</span> <span class="dv">2</span>L)))</span>
+<span id="cb78-2"><a href="#cb78-2" aria-hidden="true" tabindex="-1"></a><span class="fu">tic</span>(<span class="st">"Future `plan(list(tweak(callr, workers = 2L), tweak(callr, workers = 2L)))`"</span>)</span>
+<span id="cb78-3"><a href="#cb78-3" aria-hidden="true" tabindex="-1"></a>list_callr2_2_result <span class="ot">&lt;-</span> rlang<span class="sc">::</span><span class="fu">try_fetch</span>(</span>
+<span id="cb78-4"><a href="#cb78-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">future_nested_loop</span>(),</span>
+<span id="cb78-5"><a href="#cb78-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">error =</span> <span class="cf">function</span>(cnd) <span class="fu">inform</span>(<span class="st">"Task failed."</span>, <span class="at">parent =</span> cnd)</span>
+<span id="cb78-6"><a href="#cb78-6" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb78-7"><a href="#cb78-7" aria-hidden="true" tabindex="-1"></a>list_callr2_2_time <span class="ot">&lt;-</span> <span class="fu">toc</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Future `plan(list(tweak(callr, workers = 2L), tweak(callr, workers = 2L)))`: 6.299 sec elapsed</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb80"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb80-1"><a href="#cb80-1" aria-hidden="true" tabindex="-1"></a><span class="fu">check_result</span>(</span>
+<span id="cb80-2"><a href="#cb80-2" aria-hidden="true" tabindex="-1"></a>    <span class="at">task_time =</span> list_callr2_2_time,</span>
+<span id="cb80-3"><a href="#cb80-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">task_result =</span> list_callr2_2_result</span>
+<span id="cb80-4"><a href="#cb80-4" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>✔ Task returned expected result</code></pre>
+</div>
+</div>
+</section>
+</section>
+<section id="execution-time-summary-table" class="level3">
+<h3 class="anchored" data-anchor-id="execution-time-summary-table">Execution time summary table</h3>
+<div class="cell">
+<div class="cell-output-display">
+<table class="caption-top table table-sm table-striped small">
+<colgroup>
+<col style="width: 87%">
+<col style="width: 10%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;"><code>future::plan(.)</code></th>
+<th style="text-align: right;">Elapsed time</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Base R</td>
+<td style="text-align: right;">20.076</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><code>sequential</code></td>
+<td style="text-align: right;">20.145</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><code>multisession(workers = 2L)</code></td>
+<td style="text-align: right;">10.365</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><code>multisession(workers = 4L)</code></td>
+<td style="text-align: right;">10.404</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><code>list(multisession, multisession)</code></td>
+<td style="text-align: right;">10.651</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><code>list(tweak(multisession, workers = 2L), tweak(multisession, workers = 2L))</code></td>
+<td style="text-align: right;">6.349</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><code>list(tweak(multisession, workers = 2L), tweak(multisession, workers = I(2L)))</code></td>
+<td style="text-align: right;">6.396</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><code>list(tweak(callr, workers = 2L), tweak(callr, workers = 2L))</code></td>
+<td style="text-align: right;">6.299</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+
+
+</section>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const onCopySuccess = function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
+  });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    // For code content inside modals, clipBoardJS needs to be initialized with a container option
+    // TODO: Check when it could be a function (https://github.com/zenorocha/clipboard.js/issues/860)
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp("https:\/\/astamm\.github\.io\/anf-rhpc-futureverse\/");
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>
