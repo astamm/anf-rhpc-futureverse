@@ -28,6 +28,8 @@ The main webpage is at <https://astamm.github.io/futureverse/>.
     - [{futureverse}](https://www.futureverse.org)
     - [{gt}](https://gt.rstudio.com/)
     - [{purrr}](https://purrr.tidyverse.org)
+    - [{Rcpp}](https://dirk.eddelbuettel.com/code/rcpp.html)
+    - [{RcppParallel}](https://rcppcore.github.io/RcppParallel/)
     - [{rlang}](https://rlang.r-lib.org)
     - [{roahd}](https://astamm.github.io/roahd/)
     - [{tictoc}](https://github.com/jabiru/tictoc)

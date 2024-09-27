@@ -7,7 +7,7 @@ name: Quarto Publish
 
 jobs:
   build-deploy:
-    runs-on: ubuntu-22.04
+    runs-on: macos-latest
     
     permissions:
       contents: write
@@ -26,15 +26,23 @@ jobs:
           
       - name: Install R packages
         run: |
-           options(repos = "https://packagemanager.posit.co/cran/__linux__/jammy/latest")
+           options(repos = "https://packagemanager.posit.co/cran/latest")
            options(
              HTTPUserAgent = sprintf("R/%s R (%s)",
                getRversion(),
                paste(getRversion(), R.version$platform, R.version$arch, R.version$os)
              )
            )
-           install.packages(c("rmarkdown", "futureverse", "gt", "purrr", "rlang", "roahd", "tictoc"))
+           install.packages(c("rmarkdown", "futureverse", "gt", "purrr", "Rcpp", "RcppParallel", "rlang", "roahd", "tictoc"))
         shell: Rscript {0}
+      
+      - name: Setup OpenMP
+        run: |
+          brew install libomp
+          mkdir ~/.R
+          echo "CPPFLAGS += -I/opt/homebrew/opt/libomp/include -Xclang -fopenmp" > ~/.R/Makevars
+          echo "LDFLAGS += -L/opt/homebrew/opt/libomp/lib -lomp" >> ~/.R/Makevars
+        shell: bash
  
       - name: Render and Publish
         uses: quarto-dev/quarto-actions/publish@v2
