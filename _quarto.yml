@@ -4,7 +4,7 @@ project:
   
 website:
   title: "futureverse"
-  repo-url: https://github.com/astamm/anf-rhpc-futureverse/
+  repo-url: https://github.com/astamm/futureverse/
   repo-actions: [edit, source, issue]
   page-footer: 
     background: light
@@ -15,23 +15,27 @@ website:
     left:
       - text: "Part 1"
         menu:
-          - text: "Slides Part 1 (online)"
+          - text: "Slides"
             url:  https://docs.google.com/presentation/d/1P3gHm26OPbN4Ftnr_QHw_FmHgDVtOWcC64yIWx63KtY/edit?usp=sharing
-          - text: "Lab 1"
-            href: lab1.qmd
+          - text: "Lab"
+            href: lab/lab1.qmd
       - text: "Part 2"
         menu:
-          - text: "Slides Part 2 (online)"
+          - text: "Slides"
             url:  https://docs.google.com/presentation/d/1RN1ru9-HoOKsIjORZECFmDvzWbpVn0ZsyQDl3X37fbU/edit?usp=sharing
-          - text: "Lab 2"
-            href: lab2.qmd
+          - text: "Lab"
+            href: lab/lab2.qmd
       - text: "Case Study"
-        href: lab/hausdorff_dist.qmd
+        menu:
+          - text: "Instructions"
+            href: casestudy/hausdorff_dist.qmd
+          - text: "Solutions"
+            href: casestudy/hausdorff_dist_solutions.qmd
       - text: "FAQ"
-        href: futureverse-faq.qmd
+        href: faq/futureverse-faq.qmd
     right:
       - icon: github
-        href: https://github.com/astamm/anf-rhpc-futureverse/
+        href: https://github.com/astamm/futureverse/
         
   search: 
     location: navbar

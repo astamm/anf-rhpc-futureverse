@@ -1,0 +1,486 @@
+---
+title: "Hausdorff Distance Matrix Computation"
+subtitle: "Solutions"
+author: "Aymeric Stamm"
+date: today
+format: html
+toc: true
+---
+
+```{r setup}
+#| include: false
+mfdat <- readRDS("data/mfdat.rds")
+dat <- readRDS("data/dat.rds")
+dat <- dat[1:21]
+library(purrr)
+library(rlang)
+library(roahd)
+```
+
+## Data & Goal
+
+We have simulated 3D functional data for this lab that is provided in the Quarto
+document in the `dat` object.
+
+The `dat` object is a list of size $100$ containing $100$ three-dimensional
+curves observed on a common grid of size $200$ of the interval $[0, 1]$.
+
+As a result, each element of the `dat` list is a $3 \times 200$ matrix.
+
+Here we focus on a subset of the data, the first $21$ curves, which looks like:
+```{r data-viz}
+plot(mfdat)
+```
+
+::: {.callout-tip icon=false}
+## Objective
+
+The goal is to implement a function similar to `stats::dist()` which computes
+the pairwise distance matrix on this functional dataset using the Hausdorff
+distance.
+:::
+
+## Hausdorff distance in R
+
+We can implement the Hausdorff distance between two curves as:
+
+```{r hausdorff_distance_vec}
+hausdorff_distance_vec <- function(x, y) {
+  P <- ncol(x)
+  dX <- 1:P |>
+    purrr::map_dbl(\(p) {
+      min(colSums((y - x[, p])^2))
+    }) |>
+    max()
+  dY <- 1:P |>
+    purrr::map_dbl(\(p) {
+      min(colSums((x - y[, p])^2))
+    }) |>
+    max()
+  sqrt(max(dX, dY))
+}
+```
+
+This version exploits the vectorized nature of R to compute the Hausdorff
+distance via calls to `colSums()` and `max()`. Another version based on a double
+loop is provided by the following `hausdorff_distance_for()` function:
+
+```{r hausdorff_distance_for}
+hausdorff_distance_for <- function(x, y) {
+  P <- ncol(x)
+  dX <- 0
+  dY <- 0
+  for (i in 1:P) {
+    min_dist_x <- Inf
+    min_dist_y <- Inf
+    for (j in 1:P) {
+      dist_x <- sum((y[, j] - x[, i])^2)
+      if (dist_x < min_dist_x) {
+        min_dist_x <- dist_x
+      }
+      dist_y <- sum((x[, j] - y[, i])^2)
+      if (dist_y < min_dist_y) {
+        min_dist_y <- dist_y
+      }
+    }
+    if (min_dist_x > dX) {
+      dX <- min_dist_x
+    }
+    if (min_dist_y > dY) {
+      dY <- min_dist_y
+    }
+  }
+  sqrt(max(dX, dY))
+}
+```
+
+We can benchmark the two versions:
+
+```{r}
+#| echo: false
+bm <- readRDS("data/hdist_r_bch.rds")
+```
+
+```{r}
+#| eval: false
+bm <- bench::mark(
+  hausdorff_distance_vec(dat[[1]], dat[[2]]),
+  hausdorff_distance_for(dat[[1]], dat[[2]])
+)
+```
+
+```{r}
+#| echo: false
+bm |> 
+  dplyr::select(expression, median, mem_alloc) |> 
+  dplyr::mutate(
+    expression = purrr::map_chr(expression, deparse),
+    median = as.numeric(median) * 1000,
+    mem_alloc = as.numeric(mem_alloc)
+  ) |>
+  gt::gt() |>
+  gt::cols_label(
+    expression = gt::md("**Expression**"),
+    median = gt::md("**Median computation time**"),
+    mem_alloc = gt::md("**Memory allocation**")
+  ) |>
+  gt::cols_align(align =  "left", columns = expression) |>
+  gt::cols_align(align = "right", columns = median:mem_alloc) |>
+  gt::cols_align_decimal() |>
+  gt::fmt_number(columns = "median", decimals = 2, pattern = "{x} ms") |>
+  gt::fmt_bytes(columns = "mem_alloc")
+```
+
+We conclude that the vectorized version is faster but has a huge memory
+footprint compared to the loop-based version. This means that the vectorized
+version is not suitable for even moderately large data sets.
+
+## Pairwise distance matrix in R
+
+::: {.callout-tip}
+## dist objects
+
+Take a look at the documentation of the `stats::dist()` function to understand
+how to make an object of class `dist`.
+:::
+
+We can exploit the previous functions to compute the pairwise distance matrix
+using the Hausdorff distance:
+
+```{r dist_r_v1}
+dist_r_v1 <- function(x, vectorized = FALSE) {
+  hausdorff_distance <- if (vectorized) 
+    hausdorff_distance_vec
+  else 
+    hausdorff_distance_for
+  N <- length(x)
+  out <- 1:(N - 1) |>
+    purrr::map(\(i) {
+      purrr::map_dbl((i + 1):N, \(j) {
+        hausdorff_distance(x[[i]], x[[j]])
+      })
+    }) |>
+    purrr::list_c()
+
+  attributes(out) <- NULL
+  attr(out, "Size") <- N
+  lbls <- names(x)
+  attr(out, "Labels") <- if (is.null(lbls)) 1:N else lbls
+  attr(out, "Diag") <- FALSE
+  attr(out, "Upper") <- FALSE
+  attr(out, "method") <- "hausdorff"
+  class(out) <- "dist"
+  out
+}
+```
+
+We can benchmark the two versions:
+
+```{r}
+#| echo: false
+bm <- readRDS("data/dist_r_v1_bch.rds")
+```
+
+```{r}
+#| eval: false
+bm <- bench::mark(
+  dist_r_v1(dat, vectorized = TRUE),
+  dist_r_v1(dat, vectorized = FALSE)
+)
+```
+
+```{r}
+#| echo: false
+bm |> 
+  dplyr::select(expression, median, mem_alloc) |> 
+  dplyr::mutate(
+    expression = purrr::map_chr(expression, deparse),
+    median = as.numeric(median),
+    mem_alloc = as.numeric(mem_alloc)
+  ) |>
+  gt::gt() |>
+  gt::cols_label(
+    expression = gt::md("**Expression**"),
+    median = gt::md("**Median computation time**"),
+    mem_alloc = gt::md("**Memory allocation**")
+  ) |>
+  gt::cols_align(align =  "left", columns = expression) |>
+  gt::cols_align(align = "right", columns = median:mem_alloc) |>
+  gt::cols_align_decimal() |>
+  gt::fmt_number(columns = "median", decimals = 2, pattern = "{x} s") |>
+  gt::fmt_bytes(columns = "mem_alloc")
+```
+
+::: {.callout-tip}
+## Memory footprint
+
+We confirm that the vectorized version is not scalable to large datasets. Using
+it on the full dataset actually requires 12GB of memory! We will therefore focus
+on the loop-based version from now on.
+:::
+
+## futureverse
+
+### Parallelize outer loop
+
+```{r dist_r_v2}
+dist_r_v2 <- function(x) {
+  N <- length(x)
+  out <- 1:(N - 1) |>
+    furrr::future_map(\(i) {
+      purrr::map_dbl((i + 1):N, \(j) {
+        hausdorff_distance_for(x[[i]], x[[j]])
+      })
+    }) |>
+    purrr::list_c()
+
+  attributes(out) <- NULL
+  attr(out, "Size") <- N
+  lbls <- names(x)
+  attr(out, "Labels") <- if (is.null(lbls)) 1:N else lbls
+  attr(out, "Diag") <- FALSE
+  attr(out, "Upper") <- FALSE
+  attr(out, "method") <- "hausdorff"
+  class(out) <- "dist"
+  out
+}
+```
+
+### Tweaking the chunk size
+
+```{r dist_r_v3}
+dist_r_v3 <- function(x) {
+  N <- length(x)
+  out <- 1:(N - 1) |>
+    furrr::future_map(\(i) {
+      purrr::map_dbl((i + 1):N, \(j) {
+        hausdorff_distance_for(x[[i]], x[[j]])
+      })
+    }, .options = furrr::furrr_options(chunk_size = 1)) |>
+    purrr::list_c()
+
+  attributes(out) <- NULL
+  attr(out, "Size") <- N
+  lbls <- names(x)
+  attr(out, "Labels") <- if (is.null(lbls)) 1:N else lbls
+  attr(out, "Diag") <- FALSE
+  attr(out, "Upper") <- FALSE
+  attr(out, "method") <- "hausdorff"
+  class(out) <- "dist"
+  out
+}
+```
+
+### Nested plan
+
+```{r dist_r_v4}
+dist_r_v4 <- function(x) {
+  N <- length(x)
+  out <- 1:(N - 1) |>
+    furrr::future_map(\(i) {
+      furrr::future_map_dbl((i + 1):N, \(j) {
+        hausdorff_distance_for(x[[i]], x[[j]])
+      })
+    }, .options = furrr::furrr_options(chunk_size = 1)) |>
+    purrr::list_c()
+
+  attributes(out) <- NULL
+  attr(out, "Size") <- N
+  lbls <- names(x)
+  attr(out, "Labels") <- if (is.null(lbls)) 1:N else lbls
+  attr(out, "Diag") <- FALSE
+  attr(out, "Upper") <- FALSE
+  attr(out, "method") <- "hausdorff"
+  class(out) <- "dist"
+  out
+}
+```
+
+### Convert to single loop
+
+```{r dist_r_v5}
+dist_r_v5 <- function(x) {
+  N <- length(x)
+  K <- N * (N - 1) / 2
+  out <- furrr::future_map_dbl(1:K, \(k) {
+    k <- k - 1
+    i <- N - 2 - floor(sqrt(-8 * k + 4 * N * (N - 1) - 7) / 2.0 - 0.5);
+    j <- k + i + 1 - N * (N - 1) / 2 + (N - i) * ((N - i) - 1) / 2;
+    i <- i + 1
+    j <- j + 1
+    hausdorff_distance_for(x[[i]], x[[j]])
+  })
+  attributes(out) <- NULL
+  attr(out, "Size") <- N
+  lbls <- names(x)
+  attr(out, "Labels") <- if (is.null(lbls)) 1:N else lbls
+  attr(out, "Diag") <- FALSE
+  attr(out, "Upper") <- FALSE
+  attr(out, "method") <- "hausdorff"
+  class(out) <- "dist"
+  out
+}
+```
+
+## C++ implementation
+
+The fact that the `dist` function takes a list of matrices as input can be
+handled by [{Rcpp}](https://rcpp.org/). However, there is no threadsafe wrapper
+for lists due to the fact that they can store objects of different types and
+thus cannot be serialized.
+
+We therefore use a vector representation for an $L$-dimensional curve observed
+on a grid of $P$ points. The vector is of length $L \times N$. This allows the
+entire data set to be passed as a single matrix $X$ to the C++ function where
+the $i$-*th* row reads:
+
+$$
+x_i^{(1)}(t_1), \dots, x_i^{(1)}(t_P), x_i^{(2)}(t_1), \dots, x_i^{(2)}(t_P), \dots, x_i^{(L)}(t_1), \dots, x_i^{(L)}(t_P).
+$$
+
+```{Rcpp}
+#| file: src/hausdorff.cpp
+```
+
+The `hausdorff_distance_cpp()` function implements the Hausdorff distance
+between two curves, where a curve is stored as a vector as described in the
+beginning of the section. The function therefore takes an additional optional
+argument to specify the dimension of the curve. The function has two
+implementations with different input types (`Rcpp::NumericVector` and
+`RcppParallel::RMatrix<double>::Row`). The latter is used to parallelize the
+computation using the thread-safe accessor to vectors. Only the former is
+exported to R.
+
+The `listToMatrix()` function is used to convert a list of matrices to a single
+matrix that stores the sample of curves in a format that can be passed to the
+`dist_cpp_omp()` and `dist_rcppparallel()` functions in a thread-safe manner.
+
+The `dist_cpp_omp()` and `dist_rcppparallel()` functions compute the Hausdorff
+distance between all pairs of curves in the sample. The former uses
+[OpenMP](https://www.openmp.org) to parallelize the computation, while the
+latter uses [{RcppParallel}](https://rcppcore.github.io/RcppParallel/). Both
+functions have two implementations with different input types
+(`Rcpp::NumericMatrix` and `Rcpp::List`). The former can be wrapped with the
+tread-safe accessor to matrices, while the latter is the one that is exported to
+R and internally uses the `listToMatrix()` function to convert the input list to
+a matrix.
+
+The `dist_rcppparallel()` function parallelizes the computations via the
+`RcppParallel::parallelFor()` function, which requires a `RcppParallel::Worker`
+object. The `HausdorffDistanceComputer` class inherits from the
+`RcppParallel::Worker` class and is used to implement exactly what a single
+worker should do.
+
+## Benchmark
+
+```{r}
+#| echo: false
+bm <- readRDS("data/dist_all_bch.rds")
+```
+
+```{r}
+#| eval: false
+library(future)
+
+bm <- bench::mark(
+  sequential = dist_r_v1(dat, vectorized = FALSE),
+  outer = {
+    plan(multisession, workers = 4L)
+    out <- dist_r_v2(dat)
+    plan(sequential)
+    out
+  },
+  chunksize = {
+    plan(multisession, workers = 4L)
+    out <- dist_r_v3(dat)
+    plan(sequential)
+    out
+  },
+  nested = {
+    plan(list(
+      tweak(multisession, workers = 2L),
+      tweak(multisession, workers = I(2L))
+    ))
+    out <- dist_r_v4(dat)
+    plan(sequential)
+    out
+  },
+  singleloop = {
+    plan(multisession, workers = 4L)
+    out <- dist_r_v5(dat)
+    plan(sequential)
+    out
+  },
+  openmp1 = dist_cpp_omp(dat, dimension = 3L, ncores = 1L),
+  openmp4 = dist_cpp_omp(dat, dimension = 3L, ncores = 4L),
+  rcppparallel1 = dist_rcppparallel(dat, dimension = 3L, ncores = 1L),
+  rcppparallel4 = dist_rcppparallel(dat, dimension = 3L, ncores = 4L)
+)
+```
+
+```{r}
+#| echo: false
+bm |> 
+  dplyr::select(expression, median, mem_alloc) |> 
+  dplyr::mutate(
+    lang = c(rep("R", 5), rep("C++", 4)),
+    expression = names(expression),
+    median = as.numeric(median) * 1000,
+    mem_alloc = as.numeric(mem_alloc)
+  ) |>
+  dplyr::select(lang, expression, median, mem_alloc) |>
+  gt::gt() |>
+  gt::cols_label(
+    lang = gt::md("**Language**"),
+    expression = gt::md("**Expression**"),
+    median = gt::md("**Median computation time**"),
+    mem_alloc = gt::md("**Memory allocation**")
+  ) |>
+  gt::cols_align(align =  "left", columns = lang:expression) |>
+  gt::cols_align(align = "right", columns = median:mem_alloc) |>
+  gt::cols_align_decimal(columns = median:mem_alloc) |>
+  gt::fmt_number(columns = "median", decimals = 2, pattern = "{x} ms") |>
+  gt::fmt_bytes(columns = "mem_alloc") |> 
+  gt::tab_header(
+    title = "Comparison of different implementations",
+    subtitle = "The computation time is given in milliseconds and the memory allocation in bytes."
+  ) |> 
+  # Add line color based on language
+  gt::tab_style(
+    style = gt::cell_fill(color = "lightskyblue1"),
+    locations = gt::cells_body(rows = lang == "R")
+  ) |>
+  gt::tab_style(
+    style = gt::cell_fill(color = "lightgoldenrod1"),
+    locations = gt::cells_body(rows = lang == "C++")
+  ) |> 
+  # Color the header
+  gt::tab_style(
+    style = gt::cell_fill(color = "lightgray"),
+    locations = gt::cells_column_labels()
+  )
+```
+
+## Interpretation
+
+**General observation.** Using C++ is much faster than using R. This is in
+particular due to never copying the data. It also provides linear speed-up as
+expected.
+
+**R implementation.** The original Hausdorff distance implementation has a
+double loop.
+
+- The outer loop generates unbalanced chunks, which is not optimal (`outer`
+entry).
+- Load balancing is better with a fixed chunk size of 1 (`chunksize` entry). 
+- Using nested parallelization does not help (`nested` entry) achieves
+intermediate results. It is better than the outer loop but worse than the fixed
+chunk size.
+- Transforming the original double loop into a single loop (`singleloop` entry)
+is as fast as parallelizing the outer loop using a chunk size of 1 (`singleloop`
+entry) but its memory allocation is much lower. This is because, when the chunk
+size is 1, a future is created for each iteration of the loop, and the whole
+data is copied for each future. In contrast, the single loop version submits a
+single future per worker which creates less copies of the data.
+- In general, playing with chunk size and nested parallelization generates more
+future objects and copies the data more often, which increases memory allocation.
