@@ -97,11 +97,11 @@ ul.task-list li input[type="checkbox"] {
     <ul class="dropdown-menu" aria-labelledby="nav-menu-part-1">    
         <li>
     <a class="dropdown-item" href="https://docs.google.com/presentation/d/1P3gHm26OPbN4Ftnr_QHw_FmHgDVtOWcC64yIWx63KtY/edit?usp=sharing">
- <span class="dropdown-text">Slides Part 1 (online)</span></a>
+ <span class="dropdown-text">Slides</span></a>
   </li>  
         <li>
-    <a class="dropdown-item" href="./lab1.html">
- <span class="dropdown-text">Lab 1</span></a>
+    <a class="dropdown-item" href="./lab/lab1.html">
+ <span class="dropdown-text">Lab</span></a>
   </li>  
     </ul>
   </li>
@@ -112,26 +112,37 @@ ul.task-list li input[type="checkbox"] {
     <ul class="dropdown-menu" aria-labelledby="nav-menu-part-2">    
         <li>
     <a class="dropdown-item" href="https://docs.google.com/presentation/d/1RN1ru9-HoOKsIjORZECFmDvzWbpVn0ZsyQDl3X37fbU/edit?usp=sharing">
- <span class="dropdown-text">Slides Part 2 (online)</span></a>
+ <span class="dropdown-text">Slides</span></a>
   </li>  
         <li>
-    <a class="dropdown-item" href="./lab2.html">
- <span class="dropdown-text">Lab 2</span></a>
+    <a class="dropdown-item" href="./lab/lab2.html">
+ <span class="dropdown-text">Lab</span></a>
+  </li>  
+    </ul>
+  </li>
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-case-study" role="link" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">Case Study</span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-case-study">    
+        <li>
+    <a class="dropdown-item" href="./casestudy/hausdorff_dist.html">
+ <span class="dropdown-text">Instructions</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="./casestudy/hausdorff_dist_solutions.html">
+ <span class="dropdown-text">Solutions</span></a>
   </li>  
     </ul>
   </li>
   <li class="nav-item">
-    <a class="nav-link" href="./lab/hausdorff_dist.html"> 
-<span class="menu-text">Case Study</span></a>
-  </li>  
-  <li class="nav-item">
-    <a class="nav-link" href="./futureverse-faq.html"> 
+    <a class="nav-link" href="./faq/futureverse-faq.html"> 
 <span class="menu-text">FAQ</span></a>
   </li>  
 </ul>
             <ul class="navbar-nav navbar-nav-scroll ms-auto">
   <li class="nav-item compact">
-    <a class="nav-link" href="https://github.com/astamm/anf-rhpc-futureverse/"> <i class="bi bi-github" role="img">
+    <a class="nav-link" href="https://github.com/astamm/futureverse/"> <i class="bi bi-github" role="img">
 </i> 
 <span class="menu-text"></span></a>
   </li>  
@@ -157,7 +168,7 @@ ul.task-list li input[type="checkbox"] {
   <li><a href="#requirements" id="toc-requirements" class="nav-link" data-scroll-target="#requirements">Requirements</a></li>
   </ul></li>
   </ul>
-<div class="toc-actions"><ul><li><a href="https://github.com/astamm/anf-rhpc-futureverse/edit/main/index.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/astamm/anf-rhpc-futureverse/blob/main/index.qmd" class="toc-action"><i class="bi empty"></i>View source</a></li><li><a href="https://github.com/astamm/anf-rhpc-futureverse/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
+<div class="toc-actions"><ul><li><a href="https://github.com/astamm/futureverse/edit/main/index.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/astamm/futureverse/blob/main/index.qmd" class="toc-action"><i class="bi empty"></i>View source</a></li><li><a href="https://github.com/astamm/futureverse/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
@@ -189,7 +200,7 @@ ul.task-list li input[type="checkbox"] {
 <h2 class="anchored" data-anchor-id="material">Material</h2>
 <p>Material for the Futureverse tutorial at the ANF <a href="https://indico.mathrice.fr/event/536/">High Performance Computing with R</a>, Frejus, France.</p>
 <p>Total time: 3 hours (tentatively).</p>
-<p>The main webpage is at <a href="https://astamm.github.io/anf-rhpc-futureverse/" class="uri">https://astamm.github.io/anf-rhpc-futureverse/</a>.</p>
+<p>The main webpage is at <a href="https://astamm.github.io/futureverse/" class="uri">https://astamm.github.io/futureverse/</a>.</p>
 <section id="requirements" class="level3">
 <h3 class="anchored" data-anchor-id="requirements">Requirements</h3>
 <ul>
@@ -199,7 +210,10 @@ ul.task-list li input[type="checkbox"] {
 <li><p>R packages:</p>
 <ul>
 <li><a href="https://www.futureverse.org">{futureverse}</a></li>
+<li><a href="https://gt.rstudio.com/">{gt}</a></li>
 <li><a href="https://purrr.tidyverse.org">{purrr}</a></li>
+<li><a href="https://dirk.eddelbuettel.com/code/rcpp.html">{Rcpp}</a></li>
+<li><a href="https://rcppcore.github.io/RcppParallel/">{RcppParallel}</a></li>
 <li><a href="https://rlang.r-lib.org">{rlang}</a></li>
 <li><a href="https://astamm.github.io/roahd/">{roahd}</a></li>
 <li><a href="https://github.com/jabiru/tictoc">{tictoc}</a></li>
@@ -303,7 +317,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   }
     var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
     var mailtoRegex = new RegExp(/^mailto:/);
-      var filterRegex = new RegExp("https:\/\/astamm\.github\.io\/anf-rhpc-futureverse\/");
+      var filterRegex = new RegExp("https:\/\/astamm\.github\.io\/futureverse\/");
     var isInternal = (href) => {
         return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
     }
@@ -639,7 +653,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </div>   
     <div class="nav-footer-center">
       &nbsp;
-    <div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/astamm/anf-rhpc-futureverse/edit/main/index.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/astamm/anf-rhpc-futureverse/blob/main/index.qmd" class="toc-action"><i class="bi empty"></i>View source</a></li><li><a href="https://github.com/astamm/anf-rhpc-futureverse/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
+    <div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/astamm/futureverse/edit/main/index.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/astamm/futureverse/blob/main/index.qmd" class="toc-action"><i class="bi empty"></i>View source</a></li><li><a href="https://github.com/astamm/futureverse/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
     <div class="nav-footer-right">
 <p>This website is built with <a href="https://quarto.org/">Quarto</a></p>
 </div>

@@ -1,1 +1,1 @@
-Sitemap: https://astamm.github.io/anf-rhpc-futureverse/sitemap.xml
+Sitemap: https://astamm.github.io/futureverse/sitemap.xml

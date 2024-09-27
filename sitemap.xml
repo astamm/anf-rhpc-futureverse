@@ -1,23 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://astamm.github.io/anf-rhpc-futureverse/lab2.html</loc>
-    <lastmod>2024-09-24T12:07:18.396Z</lastmod>
+    <loc>https://astamm.github.io/futureverse/index.html</loc>
+    <lastmod>2024-09-27T09:53:49.385Z</lastmod>
   </url>
   <url>
-    <loc>https://astamm.github.io/anf-rhpc-futureverse/lab1.html</loc>
-    <lastmod>2024-09-24T12:07:18.395Z</lastmod>
+    <loc>https://astamm.github.io/futureverse/lab/lab1.html</loc>
+    <lastmod>2024-09-27T09:53:49.385Z</lastmod>
   </url>
   <url>
-    <loc>https://astamm.github.io/anf-rhpc-futureverse/lab/hausdorff_dist.html</loc>
-    <lastmod>2024-09-24T12:07:18.395Z</lastmod>
+    <loc>https://astamm.github.io/futureverse/casestudy/hausdorff_dist_solutions.html</loc>
+    <lastmod>2024-09-27T09:53:49.384Z</lastmod>
   </url>
   <url>
-    <loc>https://astamm.github.io/anf-rhpc-futureverse/index.html</loc>
-    <lastmod>2024-09-24T12:07:18.394Z</lastmod>
+    <loc>https://astamm.github.io/futureverse/casestudy/hausdorff_dist.html</loc>
+    <lastmod>2024-09-27T09:53:49.384Z</lastmod>
   </url>
   <url>
-    <loc>https://astamm.github.io/anf-rhpc-futureverse/futureverse-faq.html</loc>
-    <lastmod>2024-09-24T12:07:18.394Z</lastmod>
+    <loc>https://astamm.github.io/futureverse/faq/futureverse-faq.html</loc>
+    <lastmod>2024-09-27T09:53:49.385Z</lastmod>
+  </url>
+  <url>
+    <loc>https://astamm.github.io/futureverse/lab/lab2.html</loc>
+    <lastmod>2024-09-27T09:53:49.385Z</lastmod>
   </url>
 </urlset>
