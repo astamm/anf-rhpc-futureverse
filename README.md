@@ -11,11 +11,12 @@ hopefully some modifications to make it more suitable for the ANF tutorial.
 
 ### Material
 
-Material for the Futureverse tutorial at the ANF [High Performance Computing with R](https://indico.mathrice.fr/event/536/), Frejus, France. 
+Material for the Futureverse tutorial at the ANF [High Performance Computing
+with R](https://indico.mathrice.fr/event/536/), Frejus, France.
 
 Total time: 3 hours (tentatively).
 
-The main webpage is at <https://astamm.github.io/anf-rhpc-futureverse/>.
+The main webpage is at <https://astamm.github.io/futureverse/>.
 
 ### Requirements
 
@@ -25,6 +26,7 @@ The main webpage is at <https://astamm.github.io/anf-rhpc-futureverse/>.
 - R packages: 
 
     - [{futureverse}](https://www.futureverse.org)
+    - [{gt}](https://gt.rstudio.com/)
     - [{purrr}](https://purrr.tidyverse.org)
     - [{rlang}](https://rlang.r-lib.org)
     - [{roahd}](https://astamm.github.io/roahd/)

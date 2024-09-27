@@ -17,7 +17,7 @@ Material for the Futureverse tutorial at the ANF [High Performance Computing wit
 
 Total time: 3 hours (tentatively).
 
-The main webpage is at <https://astamm.github.io/anf-rhpc-futureverse/>.
+The main webpage is at <https://astamm.github.io/futureverse/>.
 
 ### Requirements
 
@@ -27,6 +27,7 @@ The main webpage is at <https://astamm.github.io/anf-rhpc-futureverse/>.
 - R packages: 
 
     - [{futureverse}](https://www.futureverse.org)
+    - [{gt}](https://gt.rstudio.com/)
     - [{purrr}](https://purrr.tidyverse.org)
     - [{rlang}](https://rlang.r-lib.org)
     - [{roahd}](https://astamm.github.io/roahd/)

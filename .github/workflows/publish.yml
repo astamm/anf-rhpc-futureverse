@@ -33,7 +33,7 @@ jobs:
                paste(getRversion(), R.version$platform, R.version$arch, R.version$os)
              )
            )
-           install.packages(c("rmarkdown", "futureverse", "purrr", "rlang", "roahd", "tictoc"))
+           install.packages(c("rmarkdown", "futureverse", "gt", "purrr", "rlang", "roahd", "tictoc"))
         shell: Rscript {0}
  
       - name: Render and Publish
